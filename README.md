@@ -1,1 +1,1 @@
-# challenge42_JS
+# challenge42_js
