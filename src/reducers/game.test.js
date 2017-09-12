@@ -1,13 +1,22 @@
 import game from './game'
 import deepFreeze from 'deep-freeze'
 
-it('pause state should be toggled', () => {
+it('game can be paused', () => {
+  const beforeState = { paused: false }
+  Object.freeze(beforeState)
+  const action = { type: 'TOGGLE_PAUSE' }
+  const afterState = game(beforeState, action)
+
+  expect(afterState.paused).toBe(true)
+})
+
+it('game can be unpaused', () => {
   const beforeState = { paused: true }
   Object.freeze(beforeState)
   const action = { type: 'TOGGLE_PAUSE' }
   const afterState = game(beforeState, action)
 
-  expect(afterState.paused).toBe(!beforeState.paused)
+  expect(afterState.paused).toBe(false)
 })
 
 // TODO: duplicate for every direction
@@ -80,6 +89,36 @@ it('player can paint with color', () => {
   const expected = [
     [0, 0, 0],
     [1, 1, 5],
+    [0, 0, 0],
+  ]
+
+  expect(afterState.board).toEqual(expected)
+})
+
+it('player can pick up star', () => {
+  const board = [
+    [0, 0, 0],
+    [1, 1, 4],
+    [0, 0, 0],
+  ]
+  const beforeState = {
+    player: {
+      x: 2,
+      y: 1,
+      direction: 2,
+    },
+    stars: 1,
+    board
+  }
+  deepFreeze(beforeState)
+  const action = {
+    type: 'LOOK_FOR_STAR'
+  }
+  const afterState = game(beforeState, action)
+
+  const expected = [
+    [0, 0, 0],
+    [1, 1, 1],
     [0, 0, 0],
   ]
 

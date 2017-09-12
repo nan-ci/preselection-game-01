@@ -12,7 +12,12 @@ const actions = [
   'REPEAT_FUNCTION' // arg: function_index
 ]
 
-// colors:     1, 2, 3
+const actionsStack = [
+  { action: 'MOVE_FORWARD', color: 0 },
+  { action: 'MOVE_FORWARD', color: 0 },
+]
+
+// colors:  0, 1, 2, 3
 // with stars: 4, 5, 6
 const level1 = [
   [0, 0, 0],
@@ -29,6 +34,8 @@ const initialState = {
   board: newBoard(3, 3),
 
   player: { x: 0, y: 1, direction: 2 },
+
+  stars: 1,
 
   actionsStack: [],
 
@@ -89,7 +96,7 @@ const reducer = (state = initialState, action) => {
     const board = _.cloneDeep(state.board)
     const p = state.player
 
-    board[p.y][p.x] = board[p.y][p.x] > 3 ? 3 + color : color
+    board[p.y][p.x] = hasStar(board[p.y][p.x]) ? 3 + color : color
 
     return {
       ...state,
@@ -97,10 +104,29 @@ const reducer = (state = initialState, action) => {
     }
   }
 
+  case 'LOOK_FOR_STAR': {
+    const board = _.cloneDeep(state.board)
+    const p = state.player
+
+    if (hasStar(board[p.y][p.x])) {
+      board[p.y][p.x] = pickupStar(board[p.y][p.x])
+
+      return {
+        ...state,
+        board
+      }
+    }
+
+    return state
+  }
+
   default:
     return state
   }
 
 }
+
+const hasStar = square => square > 3
+const pickupStar = square => square -= 3
 
 export default reducer
