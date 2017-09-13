@@ -1,0 +1,52 @@
+.Wrapper {
+  width: 400px;
+  margin: auto;
+}
+
+.Stack {
+  height: 50px;
+  margin: 5px;
+  background-color: grey;
+}
+
+.Board {
+  height: 400px;
+  margin: 5px;
+  background-color: grey;
+}
+
+.Controls {
+  height: 50px;
+  margin: 5px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Controls button {
+  flex: 1;
+  margin: 5px;
+}
+
+.Actions {
+  height: 150px;
+  margin: 5px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.Actions button {
+  flex: 1 1 0;
+  margin: 5px;
+  height: 50px;
+}
+
+.Functions {
+  height: 400px;
+  margin: 5px;
+  background-color: grey;
+}
