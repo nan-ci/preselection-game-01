@@ -37,9 +37,14 @@ const initialState = {
 
   stars: 1,
 
+  delayBetweenActions: 1000, // ms
+
+  currentAction: null,
   actionsStack: [],
 
   paused: true,
+
+  ended: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +55,16 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       paused: !state.paused,
+    }
+  }
+
+  case 'NEXT_ACTION': {
+    return {
+      ...state,
+      currentAction: state.actionsStack.slice(0, 1)[0],
+      actionsStack: [
+        ...state.actionsStack.slice(1)
+      ]
     }
   }
 
@@ -113,6 +128,7 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
+        stars: state.stars - 1,
         board
       }
     }
