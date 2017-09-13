@@ -17,12 +17,20 @@ const actionsStack = [
   { action: 'MOVE_FORWARD', color: 0 },
 ]
 
-// colors:  0, 1, 2, 3
-// with stars: 4, 5, 6
-const level1 = [
-  [0, 0, 0],
-  [1, 1, 4],
-  [0, 0, 0],
+// colors:     g, r, g, b
+// colors:     0, 1, 2, 3
+// with stars:    5, 6, 7
+const board = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 2, 2, 2, 7, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
 // directions:
@@ -31,9 +39,9 @@ const level1 = [
 //   3
 
 const initialState = {
-  board: newBoard(3, 3),
+  board: board,
 
-  player: { x: 0, y: 1, direction: 2 },
+  player: { x: 3, y: 4, direction: 2 },
 
   stars: 1,
 

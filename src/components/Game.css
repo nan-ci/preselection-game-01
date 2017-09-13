@@ -1,0 +1,100 @@
+.Wrapper {
+  width: 400px;
+  margin: auto;
+  padding: 0;
+}
+
+.Stack {
+  height: 50px;
+  margin-bottom: 3px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.Board {
+  height: 400px;
+  margin-bottom: 3px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.BoardBlock {
+  width: 40px;
+  height: 40px;
+  background-color: darkgrey;
+  box-shadow: 0px 0px 0px 1px black inset;
+}
+
+.PlayerBlock {
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px;
+  background-color: clear;
+}
+
+.StarBlock {
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px;
+  background-color: clear;
+}
+
+.Controls {
+  height: 50px;
+  margin-bottom: 3px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Controls button {
+  flex: 1;
+  margin: 5px;
+}
+
+.Actions {
+  height: 150px;
+  margin-bottom: 3px;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.Actions button {
+  flex: 1 1 0;
+  margin: 5px;
+  height: 50px;
+}
+
+.Functions {
+  height: 400px;
+  margin-bottom: 3px;
+  background-color: grey;
+}
+
+.FunctionBlock {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.FunctionIdBlock {
+  width: 30px;
+  height: 30px;
+  margin: 3px;
+  background-color: orange;
+}
+
+.ActionBlock {
+  width: 30px;
+  height: 30px;
+  margin: 3px;
+  background-color: darkgrey;
+}
