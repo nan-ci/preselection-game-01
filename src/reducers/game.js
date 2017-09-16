@@ -3,13 +3,13 @@ import _ from 'lodash'
 const functions = [
   {
     id: 0,
-    actions: [
+    instructions: [
       { type: 'MOVE_FORWARD' },
       { type: 'ROTATE_RIGHT', condition: 2 },
       { type: 'PAINT_WITH_COLOR', color: 1, condition: 2 },
       { type: 'ROTATE_LEFT', condition: 3 },
       { type: 'ROTATE_LEFT', condition: 3 },
-      { type: 'REPEAT_FUNCTION', id: 1 },
+      { type: 'REPEAT_FUNCTION', id: 0 },
     ]
   }
 ]
@@ -42,12 +42,12 @@ const initialState = {
 
   stars: 2,
 
-  delayBetweenActions: 100, // ms
+  delayBetweenInstructions: 100, // ms
 
   functions,
 
-  currentAction: null,
-  actionsStack: functions[0].actions,
+  currentInstruction: null,
+  instructionsStack: functions[0].instructions,
 
   paused: true,
 
@@ -70,20 +70,20 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-  case 'NEXT_ACTION': {
+  case 'NEXT_INSTRUCTION': {
     return {
       ...state,
-      currentAction: state.actionsStack.slice(0, 1)[0],
-      actionsStack: [
-        ...state.actionsStack.slice(1)
+      currentInstruction: state.instructionsStack.slice(0, 1)[0],
+      instructionsStack: [
+        ...state.instructionsStack.slice(1)
       ]
     }
   }
 
-  case 'SET_ACTION_TO_FUNCTION': {
+  case 'SET_INSTRUCTION_TO_FUNCTION': {
     const functions = _.cloneDeep(state.functions)
     functions[action.functionId]
-      .actions[action.actionId] = action.action
+      .instructions[action.instructionId] = action.instruction
 
     return {
       ...state,
@@ -185,14 +185,13 @@ const reducer = (state = initialState, action) => {
     if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
       return state
     }
-
-    const actions = state.functions[action.id - 1].actions
+    const instructions = state.functions[action.id].instructions
 
     return {
       ...state,
-      actionsStack: [
-        ...actions,
-        ...state.actionsStack
+      instructionsStack: [
+        ...instructions,
+        ...state.instructionsStack
       ]
     }
   }

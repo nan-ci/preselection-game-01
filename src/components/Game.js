@@ -5,38 +5,38 @@ import store from '../store'
 
 const colors = ['darkgrey', '#d66f6f', '#c8f771', '#8cc9f5']
 
-const ActionBlock = ({ action }) => {
-  const graphics = action => {
-    if (action.type === 'MOVE_FORWARD') { return '↑' }
-    if (action.type === 'ROTATE_LEFT') { return '←' }
-    if (action.type === 'ROTATE_RIGHT') { return '→' }
-    if (action.type === 'PAINT_WITH_COLOR') { return `P${action.color}` }
-    if (action.type === 'REPEAT_FUNCTION') { return `F${action.id}`}
+const InstructionBlock = ({ instruction }) => {
+  const graphics = instruction => {
+    if (instruction.type === 'MOVE_FORWARD') { return '↑' }
+    if (instruction.type === 'ROTATE_LEFT') { return '←' }
+    if (instruction.type === 'ROTATE_RIGHT') { return '→' }
+    if (instruction.type === 'PAINT_WITH_COLOR') { return `P${instruction.color}` }
+    if (instruction.type === 'REPEAT_FUNCTION') { return `F${instruction.id}`}
   }
 
   const style = {
-    backgroundColor: colors[action.condition]
+    backgroundColor: colors[instruction.condition]
   }
 
   return (
-    <div className='ActionBlock' style={style}>
-      <div className='ActionBlockIcon'>
-        {graphics(action)}
+    <div className='InstructionBlock' style={style}>
+      <div className='InstructionBlockIcon'>
+        {graphics(instruction)}
       </div>
     </div>
   )
 }
 
-const Stack = ({ actions }) => {
-  const actionBlocks = actions.map((action, index) => {
+const Stack = ({ instructions }) => {
+  const instructionBlocks = instructions.map((instruction, index) => {
     return (
-      <ActionBlock key={index} action={action} />
+      <InstructionBlock key={index} instruction={instruction} />
     )
   })
 
   return (
     <div className='Stack'>
-      {actionBlocks}
+      {instructionBlocks}
     </div>
   )
 }
@@ -56,9 +56,9 @@ const Controls = () => {
   )
 }
 
-const Actions = () => {
+const Instructions = () => {
   return (
-    <div className='Actions'>
+    <div className='Instructions'>
       <button>Forward</button>
       <button>Left</button>
       <button>Right</button>
@@ -78,17 +78,17 @@ const Actions = () => {
   )
 }
 
-const FunctionBlock = ({ id, actions }) => {
-  const actionBlocks = actions.map((action, index) => {
+const FunctionBlock = ({ id, instructions }) => {
+  const instructionBlocks = instructions.map((instruction, index) => {
     return (
-      <ActionBlock key={index} action={action} />
+      <InstructionBlock key={index} instruction={instruction} />
     )
   })
 
   return (
     <div className='FunctionBlock'>
       <div className='FunctionIdBlock'>{`F${id}`}</div>
-      {actionBlocks}
+      {instructionBlocks}
     </div>
   )
 }
@@ -96,7 +96,7 @@ const FunctionBlock = ({ id, actions }) => {
 const Functions = ({ functions }) => {
   const functionsBlocks = functions.map((f, index) => {
     return (
-      <FunctionBlock key={index} id={index} actions={f.actions} />
+      <FunctionBlock key={index} id={index} instructions={f.instructions} />
     )
   })
 
@@ -150,16 +150,16 @@ class Game extends React.Component {
     const game = store.getState().game
 
     const functions = [
-      { actions: [1, 2, 3, 4, 5, 6] },
-      { actions: [1, 2, 3, 4] },
+      { instructions: [1, 2, 3, 4, 5, 6] },
+      { instructions: [1, 2, 3, 4] },
     ]
 
     return (
       <div className='Wrapper'>
-        <Stack actions={game.actionsStack} />
+        <Stack instructions={game.instructionsStack} />
         <Board board={game.board} player={game.player} />
         <Controls />
-        <Actions />
+        <Instructions />
         <Functions functions={functions} />
       </div>
     )

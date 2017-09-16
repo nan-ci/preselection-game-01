@@ -97,10 +97,10 @@ it('player can paint with color', () => {
 it('player can repeat function', () => {
   const functions = [
     {
-      id: 1,
-      actions: [
-        { type: 'MOVE_FORWARD', condition: 1 },
-        { type: 'REPEAT_FUNCTION', id: 1, condition: 1 },
+      id: 0,
+      instructions: [
+        { type: 'MOVE_FORWARD' },
+        { type: 'REPEAT_FUNCTION', id: 0 },
       ]
     }
   ]
@@ -111,12 +111,12 @@ it('player can repeat function', () => {
     ],
     player: { x: 0, y: 1, direction: 2 },
     functions,
-    actionsStack: [],
+    instructionsStack: [],
   }
   deepFreeze(beforeState)
-  const action = { type: 'REPEAT_FUNCTION', id: 1 }
+  const action = { type: 'REPEAT_FUNCTION', id: 0 }
   const afterState = game(beforeState, action)
-  const expected = functions[0].actions
+  const expected = functions[0].instructions
 
-  expect(afterState.actionsStack).toEqual(expected)
+  expect(afterState.instructionsStack).toEqual(expected)
 })

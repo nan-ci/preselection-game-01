@@ -4,22 +4,19 @@ import deepFreeze from 'deep-freeze'
 import game from './game'
 import { next } from '../actions/game'
 
-it('next action', () => {
+it('next instruction', () => {
   const beforeState = {
-    currentAction: null,
-    actionsStack: [
-      { type: 'MOVE_FORWARD' },
+    currentInstruction: null,
+    instructionsStack: [
       { type: 'MOVE_FORWARD' },
     ]
   }
   deepFreeze(beforeState)
-  const action = { type: 'NEXT_ACTION' }
+  const action = { type: 'NEXT_INSTRUCTION' }
   const afterState = game(beforeState, action)
   const expected = {
-    currentAction: { type: 'MOVE_FORWARD' },
-    actionsStack: [
-      { type: 'MOVE_FORWARD' },
-    ]
+    currentInstruction: { type: 'MOVE_FORWARD' },
+    instructionsStack: []
   }
 
   expect(afterState).toEqual(expected)
@@ -27,15 +24,15 @@ it('next action', () => {
 
 
 /*
-it('next: execute next action', () => {
+it('next: execute next instruction', () => {
   const beforeState = {
     board: [
       [1, 5],
       [0, 0],
     ],
     player: { x: 0, y: 0, direction: 2 },
-    currentAction: null,
-    actionsStack: [
+    currentInstruction: null,
+    instructionsStack: [
       { type: 'MOVE_FORWARD' }
     ],
     stars: 1,
@@ -55,8 +52,8 @@ it('next: execute next action', () => {
       [0, 0],
     ],
     player: { x: 1, y: 0, direction: 2 },
-    currentAction: null,
-    actionsStack: [],
+    currentInstruction: null,
+    instructionsStack: [],
     stars: 0,
     ended: true
   }

@@ -38,11 +38,11 @@ export const repeatFunction = (id, condition = 0) => {
 // TODO: fix test
 export const next = () => {
   return (dispatch, getState) => {
-    dispatch({ type: 'NEXT_ACTION' })
+    dispatch({ type: 'NEXT_INSTRUCTION' })
 
-    const currentAction = getState().game.currentAction
-    if (currentAction) {
-      dispatch(currentAction)
+    const currentInstruction = getState().game.currentInstruction
+    if (currentInstruction) {
+      dispatch(currentInstruction)
     }
   }
 }

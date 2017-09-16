@@ -1,18 +1,18 @@
 import store from './store'
 import { next } from './actions/game'
 
-let lastActionTime = Date.now()
+let lastInstructionTime = Date.now()
 
 export const loop = () => {
   const state = store.getState()
   const game = state.game
 
   const now = Date.now()
-  const deltaTime = now - lastActionTime
+  const deltaTime = now - lastInstructionTime
 
-  if (!game.paused && deltaTime > game.delayBetweenActions) {
+  if (!game.paused && deltaTime > game.delayBetweenInstructions) {
     store.dispatch(next())
-    lastActionTime = now
+    lastInstructionTime = now
   }
 
   if (!game.ended) {
