@@ -11,10 +11,7 @@ export const loop = () => {
   const deltaTime = now - lastActionTime
 
   if (!game.paused && deltaTime > game.delayBetweenActions) {
-
-    console.log('next', state)
     store.dispatch(next())
-
     lastActionTime = now
   }
 

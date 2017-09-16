@@ -29,7 +29,7 @@ it('player can move forward', () => {
     stars: 1,
     ended: false
   }
-  Object.freeze(beforeState)
+  deepFreeze(beforeState)
   const action = { type: 'MOVE_FORWARD', condition: 1 }
   const afterState = game(beforeState, action)
   const expected = {
@@ -53,7 +53,7 @@ it('player can rotate left', () => {
     ],
     player: { x: 0, y: 0, direction: 0 }
   }
-  Object.freeze(beforeState)
+  deepFreeze(beforeState)
   const action = { type: 'ROTATE_LEFT' }
   const afterState = game(beforeState, action)
 
@@ -68,7 +68,7 @@ it('player can rotate right', () => {
     ],
     player: { x: 0, y: 0, direction: 3 }
   }
-  Object.freeze(beforeState)
+  deepFreeze(beforeState)
   const action = { type: 'ROTATE_RIGHT' }
   const afterState = game(beforeState, action)
 
