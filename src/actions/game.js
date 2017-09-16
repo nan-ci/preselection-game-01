@@ -35,6 +35,23 @@ export const repeatFunction = (id, condition = 0) => {
   }
 }
 
+export const selectFunctionInstruction = ({ functionId, instructionId }) => {
+  return {
+    type: 'SELECT_FUNCTION_INSTRUCTION',
+    functionId,
+    instructionId
+  }
+}
+
+export const setFunctionInstruction = ({ functionId, instructionId, instruction }) => {
+  return {
+    type: 'SET_FUNCTION_INSTRUCTION',
+    functionId,
+    instructionId,
+    instruction
+  }
+}
+
 // TODO: fix test
 export const next = () => {
   return (dispatch, getState) => {

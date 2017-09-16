@@ -49,6 +49,8 @@ const initialState = {
   currentInstruction: null,
   instructionsStack: functions[0].instructions,
 
+  selectedInstruction: null,
+
   paused: true,
 
   ended: false,
@@ -80,7 +82,22 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-  case 'SET_INSTRUCTION_TO_FUNCTION': {
+  case 'SELECT_FUNCTION_INSTRUCTION': {
+    const functions = _.cloneDeep(state.functions)
+    // deselect all
+    functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
+    const instruction = functions[action.functionId]
+      .instructions[action.instructionId]
+    instruction.selected = !instruction.selected
+
+    return {
+      ...state,
+      functions,
+      selectedInstruction: instruction
+    }
+  }
+
+  case 'SET_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
     functions[action.functionId]
       .instructions[action.instructionId] = action.instruction

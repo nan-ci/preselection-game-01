@@ -2,10 +2,11 @@ import React from 'react'
 import './Game.css'
 import _ from 'lodash'
 import store from '../store'
+import { selectFunctionInstruction } from '../actions/game'
 
 const colors = ['darkgrey', '#d66f6f', '#c8f771', '#8cc9f5']
 
-const InstructionBlock = ({ instruction }) => {
+const StackInstructionBlock = ({ instruction }) => {
   const graphics = instruction => {
     if (instruction.type === 'MOVE_FORWARD') { return '↑' }
     if (instruction.type === 'ROTATE_LEFT') { return '←' }
@@ -15,7 +16,7 @@ const InstructionBlock = ({ instruction }) => {
   }
 
   const style = {
-    backgroundColor: colors[instruction.condition]
+    backgroundColor: colors[instruction.condition],
   }
 
   return (
@@ -27,10 +28,33 @@ const InstructionBlock = ({ instruction }) => {
   )
 }
 
+const FunctionInstructionBlock = ({ instruction, onClick }) => {
+  const graphics = instruction => {
+    if (instruction.type === 'MOVE_FORWARD') { return '↑' }
+    if (instruction.type === 'ROTATE_LEFT') { return '←' }
+    if (instruction.type === 'ROTATE_RIGHT') { return '→' }
+    if (instruction.type === 'PAINT_WITH_COLOR') { return `P${instruction.color}` }
+    if (instruction.type === 'REPEAT_FUNCTION') { return `F${instruction.id}`}
+  }
+
+  const style = {
+    backgroundColor: colors[instruction.condition],
+    boxShadow: instruction.selected ? '0px 0px 0px 1px black inset' : 'none'
+  }
+
+  return (
+    <div className='InstructionBlock' onClick={onClick} style={style}>
+      <div className='InstructionBlockIcon'>
+        {graphics(instruction)}
+      </div>
+    </div>
+  )
+}
+
 const Stack = ({ instructions }) => {
   const instructionBlocks = instructions.map((instruction, index) => {
     return (
-      <InstructionBlock key={index} instruction={instruction} />
+      <StackInstructionBlock key={index} instruction={instruction} />
     )
   })
 
@@ -81,7 +105,14 @@ const Instructions = () => {
 const FunctionBlock = ({ id, instructions }) => {
   const instructionBlocks = instructions.map((instruction, index) => {
     return (
-      <InstructionBlock key={index} instruction={instruction} />
+      <FunctionInstructionBlock
+        key={index}
+        instruction={instruction}
+        onClick={() => store.dispatch(selectFunctionInstruction({
+          functionId: id,
+          instructionId: index
+        }))}
+      />
     )
   })
 
@@ -96,7 +127,7 @@ const FunctionBlock = ({ id, instructions }) => {
 const Functions = ({ functions }) => {
   const functionsBlocks = functions.map((f, index) => {
     return (
-      <FunctionBlock key={index} id={index} instructions={f.instructions} />
+      <FunctionBlock key={index} id={f.id} instructions={f.instructions} />
     )
   })
 
@@ -149,18 +180,13 @@ class Game extends React.Component {
   render() {
     const game = store.getState().game
 
-    const functions = [
-      { instructions: [1, 2, 3, 4, 5, 6] },
-      { instructions: [1, 2, 3, 4] },
-    ]
-
     return (
       <div className='Wrapper'>
         <Stack instructions={game.instructionsStack} />
         <Board board={game.board} player={game.player} />
         <Controls />
         <Instructions />
-        <Functions functions={functions} />
+        <Functions functions={game.functions} />
       </div>
     )
   }
