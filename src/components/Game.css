@@ -5,48 +5,43 @@
 }
 
 .Stack {
+  background-color: grey;
   height: 50px;
   margin-bottom: 3px;
-  background-color: grey;
   display: flex;
   align-items: center;
   padding: 10px;
 }
 
 .Board {
+  background-color: grey;
   height: 400px;
   margin-bottom: 3px;
-  background-color: grey;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .BoardBlock {
+  background-color: darkgrey;
   width: 40px;
   height: 40px;
-  background-color: darkgrey;
   box-shadow: 0px 0px 0px 1px black inset;
 }
 
-.PlayerBlock {
-  width: 20px;
-  height: 20px;
-  margin: 10px 10px;
+.PlayerBlock, .StarBlock {
   background-color: clear;
-}
-
-.StarBlock {
-  width: 20px;
-  height: 20px;
-  margin: 10px 10px;
-  background-color: clear;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
 }
 
 .Controls {
+  background-color: grey;
   height: 50px;
   margin-bottom: 3px;
-  background-color: grey;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,9 +53,9 @@
 }
 
 .Instructions {
+  background-color: grey;
   height: 150px;
   margin-bottom: 3px;
-  background-color: grey;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,9 +69,9 @@
 }
 
 .Functions {
+  background-color: grey;
   height: 400px;
   margin-bottom: 3px;
-  background-color: grey;
 }
 
 .FunctionBlock {
@@ -86,22 +81,27 @@
 }
 
 .FunctionIdBlock {
-  width: 30px;
-  height: 30px;
-  margin: 3px;
   background-color: orange;
-}
-
-.InstructionBlock {
   width: 40px;
   height: 40px;
   margin: 3px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+}
+
+.InstructionBlock {
   background-color: darkgrey;
+  width: 40px;
+  height: 40px;
+  margin: 3px;
 }
 
 .InstructionBlockIcon {
-  width: 20px;
-  height: 20px;
-  margin: 10px 10px;
   background-color: clear;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
 }
