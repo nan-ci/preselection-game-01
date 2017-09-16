@@ -2,77 +2,23 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import deepFreeze from 'deep-freeze'
 import game from './game'
-import { moveForward, next } from '../actions/game'
-
-it('player move forward & pick up a star', () => {
-  const beforeState = {
-    player: {
-      x: 1,
-      y: 1,
-      direction: 2,
-    },
-    stars: 1,
-    board: [
-      [0, 0, 0],
-      [1, 1, 4],
-      [0, 0, 0],
-    ]
-  }
-
-  deepFreeze(beforeState)
-
-  const store = createStore(
-    game,
-    beforeState,
-    applyMiddleware(thunk),
-  )
-
-  store.dispatch(moveForward())
-
-  const afterState = store.getState()
-
-  const expected = {
-    player: {
-      x: 2,
-      y: 1,
-      direction: 2,
-    },
-    stars: 0,
-    board: [
-      [0, 0, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ]
-  }
-
-  expect(afterState).toEqual(expected)
-})
+import { next } from '../actions/game'
 
 it('next action', () => {
   const beforeState = {
     currentAction: null,
     actionsStack: [
-      { type: 'MOVE_FORWARD', color: 0 },
-      { type: 'MOVE_FORWARD', color: 0 },
+      { type: 'MOVE_FORWARD' },
+      { type: 'MOVE_FORWARD' },
     ]
   }
-
   deepFreeze(beforeState)
-
-  const store = createStore(
-    game,
-    beforeState,
-    applyMiddleware(thunk),
-  )
-
-  store.dispatch({ type: 'NEXT_ACTION' })
-
-  const afterState = store.getState()
-
+  const action = { type: 'NEXT_ACTION' }
+  const afterState = game(beforeState, action)
   const expected = {
-    currentAction: { type: 'MOVE_FORWARD', color: 0 },
+    currentAction: { type: 'MOVE_FORWARD' },
     actionsStack: [
-      { type: 'MOVE_FORWARD', color: 0 },
+      { type: 'MOVE_FORWARD' },
     ]
   }
 
@@ -80,53 +26,41 @@ it('next action', () => {
 })
 
 
+/*
 it('next: execute next action', () => {
-  const action = moveForward
-
   const beforeState = {
-    player: {
-      x: 1,
-      y: 1,
-      direction: 2,
-    },
-    currentAction: null,
-    actionsStack: [ action ],
-    stars: 1,
     board: [
-      [0, 0, 0],
-      [1, 1, 4],
-      [0, 0, 0],
-    ]
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 2 },
+    currentAction: null,
+    actionsStack: [
+      { type: 'MOVE_FORWARD' }
+    ],
+    stars: 1,
+    ended: false
   }
-
   deepFreeze(beforeState)
-
   const store = createStore(
     game,
     beforeState,
     applyMiddleware(thunk),
   )
-
   store.dispatch(next())
-
   const afterState = store.getState()
-
   const expected = {
-    player: {
-      x: 2,
-      y: 1,
-      direction: 2,
-    },
-    currentAction: action,
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 1, y: 0, direction: 2 },
+    currentAction: null,
     actionsStack: [],
     stars: 0,
-    board: [
-      [0, 0, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ]
+    ended: true
   }
 
   expect(afterState).toEqual(expected)
 })
-
+*/

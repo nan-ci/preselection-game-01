@@ -1,20 +1,13 @@
 import _ from 'lodash'
 
-const newBoard = (width, heigth) => {
-  return Array(heigth).fill(0).map(() => Array(width).fill(0))
-}
-
-const actions = [
-  'MOVE_FORWARD',
-  'ROTATE_LEFT',
-  'ROTATE_RIGHT',
-  'PAINT_WITH_COLOR', // arg: color
-  'REPEAT_FUNCTION' // arg: function_index
-]
-
-const actionsStack = [
-  { action: 'MOVE_FORWARD', color: 0 },
-  { action: 'MOVE_FORWARD', color: 0 },
+const functions = [
+  {
+    id: 1,
+    actions: [
+      { type: 'MOVE_FORWARD', condition: 2 },
+      { type: 'REPEAT_FUNCTION', id: 1, condition: 2 },
+    ]
+  }
 ]
 
 // colors:     g, r, g, b
@@ -39,7 +32,7 @@ const board = [
 //   3
 
 const initialState = {
-  board: board,
+  board,
 
   player: { x: 3, y: 4, direction: 2 },
 
@@ -47,22 +40,29 @@ const initialState = {
 
   delayBetweenActions: 1000, // ms
 
+  functions,
+
   currentAction: null,
-  actionsStack: [],
+  actionsStack: functions[0].actions,
 
   paused: true,
 
   ended: false,
 }
 
+const hasStar = cell => cell > 3
+const pickupStar = cell => cell -= 4
+
 const reducer = (state = initialState, action) => {
 
   switch (action.type) {
 
+  // case 'START': {}
+
   case 'TOGGLE_PAUSE': {
     return {
       ...state,
-      paused: !state.paused,
+      paused: !state.paused
     }
   }
 
@@ -77,23 +77,49 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'MOVE_FORWARD': {
-    const p = { ...state.player }
+    let p = state.player
 
+    // check color condition
+    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
+      return state
+    }
+
+    // move
+    p = { ...state.player }
     if (p.direction === 0) { p.x -= 1 }
     if (p.direction === 1) { p.y -= 1 }
     if (p.direction === 2) { p.x += 1 }
     if (p.direction === 3) { p.y += 1 }
 
+    // check for star
+    let board = state.board
+    let stars = state.stars
+    if (hasStar(state.board[p.y][p.x])) {
+      board = _.cloneDeep(state.board)
+      board[p.y][p.x] = pickupStar(board[p.y][p.x])
+
+      stars -= 1
+    }
+
     return {
       ...state,
-      player: p
+      board,
+      player: p,
+      stars,
+      ended: stars === 0 || !board[p.y][p.x]
     }
   }
 
   case 'ROTATE_LEFT': {
-    const p = {
+    // check color condition
+    let p = state.player
+    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
+      return state
+    }
+
+    p = {
       ...state.player,
-      direction: (state.player.direction + 3) % 4
+      direction: (p.direction + 3) % 4
     }
 
     return {
@@ -103,9 +129,15 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'ROTATE_RIGHT': {
-    const p = {
+    // check color condition
+    let p = state.player
+    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
+      return state
+    }
+
+    p = {
       ...state.player,
-      direction: (state.player.direction + 1) % 4
+      direction: (p.direction + 1) % 4
     }
 
     return {
@@ -115,9 +147,14 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'PAINT_WITH_COLOR': {
+    // check color condition
+    const p = state.player
+    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
+      return state
+    }
+
     const color = action.color
     const board = _.cloneDeep(state.board)
-    const p = state.player
 
     board[p.y][p.x] = hasStar(board[p.y][p.x]) ? 3 + color : color
 
@@ -127,21 +164,22 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-  case 'LOOK_FOR_STAR': {
-    const board = _.cloneDeep(state.board)
+  case 'REPEAT_FUNCTION': {
+    // check color condition
     const p = state.player
-
-    if (hasStar(board[p.y][p.x])) {
-      board[p.y][p.x] = pickupStar(board[p.y][p.x])
-
-      return {
-        ...state,
-        stars: state.stars - 1,
-        board
-      }
+    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
+      return state
     }
 
-    return state
+    const actions = state.functions[action.id - 1].actions
+
+    return {
+      ...state,
+      actionsStack: [
+        ...actions,
+        ...state.actionsStack
+      ]
+    }
   }
 
   default:
@@ -149,8 +187,5 @@ const reducer = (state = initialState, action) => {
   }
 
 }
-
-const hasStar = square => square > 3
-const pickupStar = square => square -= 3
 
 export default reducer

@@ -19,29 +19,39 @@ it('game can be unpaused', () => {
   expect(afterState.paused).toBe(false)
 })
 
-// TODO: duplicate for every direction
 it('player can move forward', () => {
   const beforeState = {
-    player: {
-      x: 1,
-      y: 1,
-      direction: 2,
-    }
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 2 },
+    stars: 1,
+    ended: false
   }
   Object.freeze(beforeState)
-  const action = { type: 'MOVE_FORWARD' }
+  const action = { type: 'MOVE_FORWARD', condition: 1 }
   const afterState = game(beforeState, action)
+  const expected = {
+    board: [
+      [1, 1],
+      [0, 0],
+    ],
+    player: { x: 1, y: 0, direction: 2 },
+    stars: 0,
+    ended: true
+  }
 
-  expect(afterState.player.x).toBe(2)
+  expect(afterState).toEqual(expected)
 })
 
 it('player can rotate left', () => {
   const beforeState = {
-    player: {
-      x: 1,
-      y: 1,
-      direction: 0,
-    }
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 0 }
   }
   Object.freeze(beforeState)
   const action = { type: 'ROTATE_LEFT' }
@@ -52,11 +62,11 @@ it('player can rotate left', () => {
 
 it('player can rotate right', () => {
   const beforeState = {
-    player: {
-      x: 1,
-      y: 1,
-      direction: 3,
-    }
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 3 }
   }
   Object.freeze(beforeState)
   const action = { type: 'ROTATE_RIGHT' }
@@ -66,61 +76,47 @@ it('player can rotate right', () => {
 })
 
 it('player can paint with color', () => {
-  const board = [
-    [0, 0, 0],
-    [1, 1, 4],
-    [0, 0, 0],
-  ]
   const beforeState = {
-    player: {
-      x: 2,
-      y: 1,
-      direction: 2,
-    },
-    board
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 3 }
   }
   deepFreeze(beforeState)
-  const action = {
-    type: 'PAINT_WITH_COLOR',
-    color: 2
-  }
+  const action = { type: 'PAINT_WITH_COLOR', color: 2 }
   const afterState = game(beforeState, action)
-
   const expected = [
-    [0, 0, 0],
-    [1, 1, 5],
-    [0, 0, 0],
+    [2, 5],
+    [0, 0],
   ]
 
   expect(afterState.board).toEqual(expected)
 })
 
-it('player can pick up star', () => {
-  const board = [
-    [0, 0, 0],
-    [1, 1, 4],
-    [0, 0, 0],
+it('player can repeat function', () => {
+  const functions = [
+    {
+      id: 1,
+      actions: [
+        { type: 'MOVE_FORWARD', condition: 1 },
+        { type: 'REPEAT_FUNCTION', id: 1, condition: 1 },
+      ]
+    }
   ]
   const beforeState = {
-    player: {
-      x: 2,
-      y: 1,
-      direction: 2,
-    },
-    stars: 1,
-    board
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 1, direction: 2 },
+    functions,
+    actionsStack: [],
   }
   deepFreeze(beforeState)
-  const action = {
-    type: 'LOOK_FOR_STAR'
-  }
+  const action = { type: 'REPEAT_FUNCTION', id: 1 }
   const afterState = game(beforeState, action)
+  const expected = functions[0].actions
 
-  const expected = [
-    [0, 0, 0],
-    [1, 1, 1],
-    [0, 0, 0],
-  ]
-
-  expect(afterState.board).toEqual(expected)
+  expect(afterState.actionsStack).toEqual(expected)
 })

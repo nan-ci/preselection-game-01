@@ -3,6 +3,30 @@ import './Game.css'
 import _ from 'lodash'
 import store from '../store'
 
+const colors = ['darkgrey', '#d66f6f', '#c8f771', '#8cc9f5']
+
+const ActionBlock = ({ action }) => {
+  const graphics = action => {
+    if (action.type === 'MOVE_FORWARD') { return '↑' }
+    if (action.type === 'ROTATE_LEFT') { return '←' }
+    if (action.type === 'ROTATE_RIGHT') { return '→' }
+    if (action.type === 'PAINT_WITH_COLOR') { return `P${action.color}` }
+    if (action.type === 'REPEAT_FUNCTION') { return `F${action.id}`}
+  }
+
+  const style = {
+    backgroundColor: colors[action.condition]
+  }
+
+  return (
+    <div className='ActionBlock' style={style}>
+      <div className='ActionBlockIcon'>
+        {graphics(action)}
+      </div>
+    </div>
+  )
+}
+
 const Stack = ({ actions }) => {
   const actionBlocks = actions.map((action, index) => {
     return (
@@ -20,8 +44,11 @@ const Stack = ({ actions }) => {
 const Controls = () => {
   return (
     <div className='Controls'>
-      <button>Play</button>
-      <button>Pause</button>
+      <button onClick={
+        () => store.dispatch({ type: 'TOGGLE_PAUSE' })
+      }>
+        {store.getState().game.paused ? 'Play' : 'Pause'}
+      </button>
       <button>Step</button>
       <button>Stop</button>
       <button>Clear</button>
@@ -47,14 +74,6 @@ const Actions = () => {
       <button>F4</button>
       <button>F5</button>
       <button>F6</button>
-    </div>
-  )
-}
-
-const ActionBlock = ({ action }) => {
-  return (
-    <div className='ActionBlock'>
-      {action}
     </div>
   )
 }
@@ -89,8 +108,6 @@ const Functions = ({ functions }) => {
 }
 
 const Board = ({ board, player }) => {
-  const colors = ['darkgrey', '#d66f6f', '#c8f771', '#8cc9f5']
-
   const boardBlocks = _.flatMap(board).map((b, index) => {
     const style = {
       backgroundColor: colors[b % 4]
@@ -130,13 +147,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const state = store.getState()
-    console.log('state', state)
+    const game = store.getState().game
 
-    const board = state.game.board
-    const player = state.game.player
-
-    const stackActions = [1, 2, 4, 4, 2, 1]
     const functions = [
       { actions: [1, 2, 3, 4, 5, 6] },
       { actions: [1, 2, 3, 4] },
@@ -144,8 +156,8 @@ class Game extends React.Component {
 
     return (
       <div className='Wrapper'>
-        <Stack actions={stackActions} />
-        <Board board={board} player={player} />
+        <Stack actions={game.actionsStack} />
+        <Board board={game.board} player={game.player} />
         <Controls />
         <Actions />
         <Functions functions={functions} />
