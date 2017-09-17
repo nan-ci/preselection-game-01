@@ -1,58 +1,16 @@
 import _ from 'lodash'
+import level0 from '../levels/level0'
 
-const functions = [
-  {
-    id: 0,
-    instructions: [
-      { type: 'MOVE_FORWARD' },
-      { type: 'ROTATE_RIGHT', condition: 2 },
-      { type: 'PAINT_WITH_COLOR', color: 1, condition: 2 },
-      { type: 'ROTATE_LEFT', condition: 3 },
-      { type: 'ROTATE_LEFT', condition: 3 },
-      { type: 'REPEAT_FUNCTION', id: 0 },
-    ]
-  }
-]
-
-// colors:     g, r, g, b
-// colors:     0, 1, 2, 3
-// with stars:    5, 6, 7
-const board = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 1, 1, 1, 2, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
-
-// directions:
-//   1
-// 0   2
-//   3
+const level = level0
 
 const initialState = {
-  board,
-
-  player: { x: 3, y: 4, direction: 2 },
-
-  stars: 2,
-
+  ...level,
   delayBetweenInstructions: 100, // ms
-
-  functions,
-
   currentInstruction: null,
-  instructionsStack: functions[0].instructions,
-
-  selectedInstruction: null,
-
+  instructionsStack: [],
+  selectedCell: null,
   paused: true,
-
+  running: false,
   ended: false,
 }
 
