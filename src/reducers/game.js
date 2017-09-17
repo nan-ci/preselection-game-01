@@ -57,8 +57,12 @@ const reducer = (state = initialState, action) => {
 
   case 'SET_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
-    functions[action.functionId]
-      .instructions[action.instructionId] = action.instruction
+    const { functionId, instructionId, instruction } = action
+    const toggle = (a, b) => Object.keys(b).map(key => {
+      (a[key] === b[key]) ? delete a[key] : a[key] = b[key]
+    })
+
+    toggle(functions[functionId].instructions[instructionId], instruction)
 
     return {
       ...state,

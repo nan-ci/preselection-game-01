@@ -67,3 +67,35 @@ it('function instruction can be set - through action creator', () => {
   expect(afterState).toEqual(expected)
 })
 
+it('function instruction can be toggled', () => {
+  const beforeState = {
+    functions: [
+      {
+        id: 0,
+        instructions: [
+          { type: 'ROTATE_LEFT', condition: 2 }
+        ]
+      }
+    ]
+  }
+  deepFreeze(beforeState)
+  const action = {
+    type: 'SET_FUNCTION_INSTRUCTION',
+    functionId: 0,
+    instructionId: 0,
+    instruction: { condition: 2 }
+  }
+  const afterState = game(beforeState, action)
+  const expected = {
+    functions: [
+      {
+        id: 0,
+        instructions: [
+          { type: 'ROTATE_LEFT' }
+        ]
+      }
+    ]
+  }
+
+  expect(afterState).toEqual(expected)
+})
