@@ -7,7 +7,9 @@ it('function instruction can be set', () => {
     functions: [
       {
         id: 0,
-        instructions: [0, 0, 0, 0, 0]
+        instructions: [
+          { type: 'ROTATE_LEFT', condition: 2 }
+        ]
       }
     ]
   }
@@ -15,15 +17,17 @@ it('function instruction can be set', () => {
   const action = {
     type: 'SET_FUNCTION_INSTRUCTION',
     functionId: 0,
-    instructionId: 2,
-    instruction: { type: 'MOVE_FORWARD', condition: 1}
+    instructionId: 0,
+    instruction: { type: 'MOVE_FORWARD' }
   }
   const afterState = game(beforeState, action)
   const expected = {
     functions: [
       {
         id: 0,
-        instructions: [0, 0, { type: 'MOVE_FORWARD', condition: 1}, 0, 0]
+        instructions: [
+          { type: 'MOVE_FORWARD', condition: 2}
+        ]
       }
     ]
   }
@@ -36,22 +40,26 @@ it('function instruction can be set - through action creator', () => {
     functions: [
       {
         id: 0,
-        instructions: [0, 0, 0, 0, 0]
+        instructions: [
+          { type: 'ROTATE_LEFT', condition: 2 }
+        ]
       }
     ]
   }
   deepFreeze(beforeState)
   const action = setFunctionInstruction({
     functionId: 0,
-    instructionId: 2,
-    instruction: { type: 'MOVE_FORWARD', condition: 1}
+    instructionId: 0,
+    instruction: { condition: 3 }
   })
   const afterState = game(beforeState, action)
   const expected = {
     functions: [
       {
         id: 0,
-        instructions: [0, 0, { type: 'MOVE_FORWARD', condition: 1}, 0, 0]
+        instructions: [
+          { type: 'ROTATE_LEFT', condition: 3 }
+        ]
       }
     ]
   }
