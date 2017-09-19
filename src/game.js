@@ -10,19 +10,27 @@ export const loop = () => {
   const now = Date.now()
   const deltaTime = now - lastInstructionTime
 
-  if (!game.paused && deltaTime > game.delayBetweenInstructions) {
+  if (!game.ended && !game.paused && deltaTime > game.delayBetweenInstructions) {
     store.dispatch(next())
     lastInstructionTime = now
   }
 
-  if (!game.ended) {
-    requestAnimationFrame(loop)
+  if (game.ended) {
+    if (game.stars === 0) { console.log('WIN') }
+    if (!game.board[game.player.y][game.player.x]) { console.log('DEAD') }
+    if (game.currentInstruction === undefined) { console.log('EMPTY STACK') }
   } else {
-    if (game.stars === 0) {
-      console.log('WIN')
-    }
-    else if (!game.board[game.player.y][game.player.x]) {
-      console.log('DEAD')
-    }
+    requestAnimationFrame(loop)
   }
 }
+
+let lastRunningState = false
+store.subscribe(() => {
+  const tmpLastRunningState = lastRunningState
+  const game = store.getState().game
+  lastRunningState = game.running
+
+  if (game.running !== tmpLastRunningState) {
+    loop()
+  }
+})

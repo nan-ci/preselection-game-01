@@ -5,7 +5,6 @@ import './index.css'
 import App from './containers/App'
 import registerServiceWorker from './registerServiceWorker'
 import store from './store'
-import * as game from './game'
 
 ReactDOM.render((
   <Provider store={store}>
@@ -14,5 +13,3 @@ ReactDOM.render((
 ), document.getElementById('root'))
 
 registerServiceWorker()
-
-game.loop()
