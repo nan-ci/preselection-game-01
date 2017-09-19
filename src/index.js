@@ -5,6 +5,7 @@ import './index.css'
 import App from './containers/App'
 import registerServiceWorker from './registerServiceWorker'
 import store from './store'
+import './game'
 
 ReactDOM.render((
   <Provider store={store}>
