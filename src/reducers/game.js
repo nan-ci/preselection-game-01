@@ -1,7 +1,5 @@
 import _ from 'lodash'
-import level0 from '../levels/level0'
-
-const level = level0
+import { level1 as level } from '../levels'
 
 const initialState = {
   ...level,
