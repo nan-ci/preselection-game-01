@@ -4,7 +4,7 @@ import _ from 'lodash'
 import store from '../store'
 import { selectFunctionInstruction } from '../actions/game'
 
-const colors = ['darkgrey', '#d66f6f', '#c8f771', '#8cc9f5']
+import { colors } from '../constants'
 
 const StackInstructionBlock = ({ instruction }) => {
   const graphics = instruction => {
