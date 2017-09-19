@@ -52,7 +52,7 @@
   margin: 5px;
 }
 
-.Instructions {
+.InstructionsPanel {
   background-color: grey;
   height: 150px;
   margin-bottom: 3px;
@@ -62,10 +62,8 @@
   flex-wrap: wrap;
 }
 
-.Instructions button {
-  flex: 1 1 0;
-  margin: 5px;
-  height: 50px;
+.InstructionsPanelBlock {
+
 }
 
 .Functions {

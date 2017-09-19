@@ -3,10 +3,10 @@ import { level1 as level } from '../levels'
 
 const initialState = {
   ...level,
-  delayBetweenInstructions: 100, // ms
-  currentInstruction: null,
+  delayBetweenInstructions: 800, // ms
+  currentInstruction: undefined,
   instructionsStack: [],
-  selectedCell: null,
+  selectedCell: undefined,
   paused: true,
   running: false,
   ended: false,
@@ -19,7 +19,34 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-  // case 'START': {}
+  case 'PLAY': {
+    if (state.running) {
+      return {
+        ...state,
+        paused: false
+      }
+    }
+
+    const f0 = state.functions[0]
+
+    return {
+      ...state,
+      instructionsStack: [ ...f0.instructions ],
+      paused: false,
+      running: true
+    }
+  }
+
+  case 'PAUSE': {
+    if (state.paused) {
+      return state
+    }
+
+    return {
+      ...state,
+      paused: true
+    }
+  }
 
   case 'TOGGLE_PAUSE': {
     return {
@@ -28,13 +55,31 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-  case 'NEXT_INSTRUCTION': {
+  case 'RESTART': {
+    return {
+      ...initialState, // TODO: rm dependency 'initialState'
+      delayBetweenInstructions: state.delayBetweenInstructions,
+      functions: _.cloneDeep(state.functions)
+    }
+  }
+
+  case 'CLEAR': {
     return {
       ...state,
-      currentInstruction: state.instructionsStack.slice(0, 1)[0],
+      functions: _.cloneDeep(level.functions)  // TODO: rm dependency 'level'
+    }
+  }
+
+  case 'NEXT_INSTRUCTION': {
+    const currentInstruction = state.instructionsStack.slice(0, 1)[0]
+
+    return {
+      ...state,
+      currentInstruction,
       instructionsStack: [
         ...state.instructionsStack.slice(1)
-      ]
+      ],
+      ended: !currentInstruction
     }
   }
 
@@ -42,21 +87,25 @@ const reducer = (state = initialState, action) => {
     const functions = _.cloneDeep(state.functions)
     // deselect all
     functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
-    const instruction = functions[action.functionId]
-      .instructions[action.instructionId]
+    const { functionId, instructionId } = action
+    const instruction = functions[functionId].instructions[instructionId]
     instruction.selected = !instruction.selected
 
     return {
       ...state,
       functions,
-      selectedInstruction: instruction
+      selectedCell: {
+        functionId,
+        instructionId,
+        instruction
+      }
     }
   }
 
   case 'SET_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
     const { functionId, instructionId, instruction } = action
-    const toggle = (a, b) => Object.keys(b).map(key => {
+    const toggle = (a, b) => Object.keys(b).forEach(key => {
       (a[key] === b[key]) ? delete a[key] : a[key] = b[key]
     })
 

@@ -52,14 +52,31 @@ export const setFunctionInstruction = ({ functionId, instructionId, instruction 
   }
 }
 
+
 // TODO: fix test
 export const next = () => {
   return (dispatch, getState) => {
     dispatch({ type: 'NEXT_INSTRUCTION' })
-
     const currentInstruction = getState().game.currentInstruction
-    if (currentInstruction) {
+    if (currentInstruction && currentInstruction.type) {
       dispatch(currentInstruction)
     }
   }
 }
+
+export const step = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: 'PAUSE' })
+    dispatch({ type: 'NEXT_INSTRUCTION' })
+
+    const currentInstruction = getState().game.currentInstruction
+    if (currentInstruction && currentInstruction.type) {
+      dispatch(currentInstruction)
+    }
+  }
+}
+
+export const play = () => ({ type: 'PLAY' })
+export const pause = () => ({ type: 'PAUSE' })
+export const restart = () => ({ type: 'RESTART' })
+export const clear = () => ({ type: 'CLEAR' })

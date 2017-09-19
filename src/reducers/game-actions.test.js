@@ -6,21 +6,42 @@ import { next } from '../actions/game'
 
 it('next instruction', () => {
   const beforeState = {
-    currentInstruction: null,
+    currentInstruction: undefined,
     instructionsStack: [
       { type: 'MOVE_FORWARD' },
-    ]
+    ],
+    ended: false
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
   const afterState = game(beforeState, action)
   const expected = {
     currentInstruction: { type: 'MOVE_FORWARD' },
-    instructionsStack: []
+    instructionsStack: [],
+    ended: false
   }
 
   expect(afterState).toEqual(expected)
 })
+
+it('empty stack: no current instruction should end game', () => {
+  const beforeState = {
+    currentInstruction: undefined,
+    instructionsStack: [],
+    ended: false
+  }
+  deepFreeze(beforeState)
+  const action = { type: 'NEXT_INSTRUCTION' }
+  const afterState = game(beforeState, action)
+  const expected = {
+    currentInstruction: undefined,
+    instructionsStack: [],
+    ended: true
+  }
+
+  expect(afterState).toEqual(expected)
+})
+
 
 
 /*

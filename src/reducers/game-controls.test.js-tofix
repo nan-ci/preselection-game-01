@@ -1,0 +1,46 @@
+import deepFreeze from 'deep-freeze'
+import game from './game'
+
+it('restart game should reset to initialState but functions', () => {
+  const initialState = {
+    board: [
+      [1, 5],
+      [0, 0],
+    ],
+    player: { x: 0, y: 0, direction: 2 },
+    currentInstruction: null,
+    instructionsStack: [
+      { type: 'MOVE_FORWARD' }
+    ],
+    stars: 1,
+    ended: false,
+    functions: [
+      {
+        id: 0,
+        instructions: [],
+        length: 2
+      }
+    ],
+  }
+  const beforeState = {
+    ...initialState,
+    functions: [
+      {
+        id: 0,
+        instructions: [
+          { type: 'MOVE_FORWARD' },
+          { type: 'REPEAT_FUNCTION', id: 0 },
+        ],
+        length: 2
+      }
+    ]
+  }
+  deepFreeze(beforeState)
+  const action = { type: 'RESTART' }
+  const afterState = game(beforeState, action)
+  console.log('afterState', afterState)
+  const expected = initialState
+
+  expect(afterState).toEqual(expected)
+})
+
