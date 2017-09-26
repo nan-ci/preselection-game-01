@@ -210,6 +210,12 @@ class Game extends React.Component {
   render() {
     const game = store.getState().game
 
+    const message = game.ended && (
+      !game.stars ? 'WIN' :
+      !game.board[game.player.y][game.player.x] ? 'DEAD' :
+      !game.currentInstruction ? 'EMPTY STACK' : ''
+    )
+
     return (
       <div className='Wrapper'>
         <Stack instructions={game.instructionsStack} />
@@ -217,6 +223,9 @@ class Game extends React.Component {
         <Controls />
         <InstructionsPanel selectedCell={game.selectedCell} activeInstructions={game.activeInstructions} />
         <Functions functions={game.functions} />
+        <div className='Message'>
+          {message}
+        </div>
       </div>
     )
   }

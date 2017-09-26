@@ -3,7 +3,7 @@ import { next } from './actions/game'
 
 let lastInstructionTime = Date.now()
 
-export const loop = () => {
+export const update = () => {
   const state = store.getState()
   const game = state.game
 
@@ -15,12 +15,8 @@ export const loop = () => {
     lastInstructionTime = now
   }
 
-  if (game.ended) {
-    if (game.stars === 0) { console.log('WIN') }
-    if (!game.board[game.player.y][game.player.x]) { console.log('DEAD') }
-    if (game.currentInstruction === undefined) { console.log('EMPTY STACK') }
-  } else {
-    requestAnimationFrame(loop)
+  if (!game.ended) {
+    requestAnimationFrame(update)
   }
 }
 
@@ -31,6 +27,6 @@ store.subscribe(() => {
   lastRunningState = game.running
 
   if (game.running !== tmpLastRunningState) {
-    loop()
+    update()
   }
 })

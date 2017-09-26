@@ -1,6 +1,9 @@
 import _ from 'lodash'
 import { level1 as level } from '../levels'
 
+const hasStar = cell => cell > 3
+const pickupStar = cell => cell -= 4
+
 const initialState = {
   ...level,
   delayBetweenInstructions: 800, // ms
@@ -11,9 +14,6 @@ const initialState = {
   running: false,
   ended: false,
 }
-
-const hasStar = cell => cell > 3
-const pickupStar = cell => cell -= 4
 
 const reducer = (state = initialState, action) => {
 
@@ -66,7 +66,7 @@ const reducer = (state = initialState, action) => {
   case 'CLEAR': {
     return {
       ...state,
-      functions: _.cloneDeep(level.functions)  // TODO: rm dependency 'level'
+      functions: _.cloneDeep(level.functions) // TODO: rm dependency 'level'
     }
   }
 
@@ -147,7 +147,7 @@ const reducer = (state = initialState, action) => {
       board,
       player: p,
       stars,
-      ended: stars === 0 || !board[p.y][p.x]
+      ended: !stars || !board[p.y][p.x]
     }
   }
 
