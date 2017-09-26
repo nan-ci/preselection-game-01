@@ -66,12 +66,14 @@ export const next = () => {
 
 export const step = () => {
   return (dispatch, getState) => {
-    dispatch({ type: 'PAUSE' })
-    dispatch({ type: 'NEXT_INSTRUCTION' })
+    const game = getState().game
 
-    const currentInstruction = getState().game.currentInstruction
-    if (currentInstruction && currentInstruction.type) {
-      dispatch(currentInstruction)
+    if (!game.running) {
+      dispatch(play())
+      game.paused && dispatch(pause())
+    } else {
+      game.paused && dispatch(pause())
+      dispatch(next())
     }
   }
 }

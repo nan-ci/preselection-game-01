@@ -53,7 +53,7 @@ const Controls = () => {
       <button onClick={() => store.dispatch(game.paused ? play() : pause())}>
         {game.paused ? 'Play' : 'Pause'}
       </button>
-      <button onClick={() => store.dispatch(step())}>Step</button>
+      <button onClick={() => !game.ended && store.dispatch(step())}>Step</button>
       <button onClick={() => store.dispatch(restart())}>Restart</button>
       <button onClick={() => store.dispatch(clear())}>Clear</button>
     </div>
