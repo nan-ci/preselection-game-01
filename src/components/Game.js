@@ -4,7 +4,7 @@ import _ from 'lodash'
 import store from '../store'
 import {
   selectFunctionInstruction, setFunctionInstruction,
-  play, pause, restart, step, clear
+  play, pause, restart, step, clear, changeSpeed
 } from '../actions/game'
 
 import { colors } from '../constants'
@@ -56,6 +56,7 @@ const Controls = () => {
       <button onClick={() => !game.ended && store.dispatch(step())}>Step</button>
       <button onClick={() => store.dispatch(restart())}>Restart</button>
       <button onClick={() => store.dispatch(clear())}>Clear</button>
+      <button onClick={() => store.dispatch(changeSpeed())}>{`Speed x${game.speed}`}</button>
     </div>
   )
 }

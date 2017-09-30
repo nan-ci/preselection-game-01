@@ -6,7 +6,7 @@ const pickupStar = cell => cell -= 4
 
 const initialState = {
   ...level,
-  delayBetweenInstructions: 800, // ms
+  speed: 1,
   currentInstruction: undefined,
   instructionsStack: [],
   selectedCell: undefined,
@@ -58,7 +58,7 @@ const reducer = (state = initialState, action) => {
   case 'RESTART': {
     return {
       ...initialState, // TODO: rm dependency 'initialState'
-      delayBetweenInstructions: state.delayBetweenInstructions,
+      speed: state.speed,
       functions: _.cloneDeep(state.functions)
     }
   }
@@ -67,6 +67,15 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       functions: _.cloneDeep(level.functions) // TODO: rm dependency 'level'
+    }
+  }
+
+  case 'CHANGE_SPEED': {
+    const maxSpeed = 8
+
+    return {
+      ...state,
+      speed: state.speed * 2 > maxSpeed ? 1 : state.speed * 2
     }
   }
 

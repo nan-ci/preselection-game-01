@@ -1,5 +1,6 @@
 import store from './store'
 import { next } from './actions/game'
+import { maxDelayBetweenInstructions } from './constants'
 
 let lastInstructionTime = Date.now()
 
@@ -10,7 +11,8 @@ export const update = () => {
   const now = Date.now()
   const deltaTime = now - lastInstructionTime
 
-  if (!game.ended && !game.paused && deltaTime > game.delayBetweenInstructions) {
+  const delayBetweenInstructions = maxDelayBetweenInstructions / game.speed
+  if (!game.ended && !game.paused && deltaTime > delayBetweenInstructions) {
     store.dispatch(next())
     lastInstructionTime = now
   }
