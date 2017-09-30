@@ -56,10 +56,14 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'RESTART': {
+    const functions = _.cloneDeep(state.functions)
+    // functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
+
     return {
       ...initialState, // TODO: rm dependency 'initialState'
       speed: state.speed,
-      functions: _.cloneDeep(state.functions)
+      selectedCell: state.selectedCell,
+      functions
     }
   }
 
@@ -94,7 +98,6 @@ const reducer = (state = initialState, action) => {
 
   case 'SELECT_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
-    // deselect all
     functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
     const { functionId, instructionId } = action
     const instruction = functions[functionId].instructions[instructionId]
