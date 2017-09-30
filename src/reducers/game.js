@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { level1 as level } from '../levels'
+import { level3 as level } from '../levels'
 
 const hasStar = cell => cell > 3
 const pickupStar = cell => cell -= 4
