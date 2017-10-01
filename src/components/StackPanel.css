@@ -1,0 +1,26 @@
+.StackPanel {
+  background-color: grey;
+  height: 50px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden;
+}
+
+
+.StackInstructionBlock {
+  background-color: darkgrey;
+  width: 40px;
+  height: 40px;
+  margin: 3px;
+}
+
+.StackInstructionBlockIcon {
+  background-color: clear;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+}

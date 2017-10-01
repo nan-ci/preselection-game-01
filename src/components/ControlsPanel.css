@@ -1,0 +1,13 @@
+.ControlsPanel {
+  background-color: grey;
+  height: 50px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ControlsPanel button {
+  flex: 1;
+  margin: 5px;
+}
