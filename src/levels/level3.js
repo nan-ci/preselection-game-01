@@ -28,7 +28,18 @@ const level0 = {
       length: 6
     }
   ],
-  activeInstructions: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0]
+  activeInstructions: [
+    'left',
+    'forward',
+    'right',
+    'C1',
+    'C2',
+    'C3',
+    'P1',
+    'P2',
+    'P3',
+    'F0',
+  ],
 }
 
 export default level0

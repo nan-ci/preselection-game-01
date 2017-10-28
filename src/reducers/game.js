@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { contain } from '../lib/utils'
 import { level3 as level } from '../levels'
 
 const hasStar = cell => cell > 3
@@ -16,15 +17,12 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-
   switch (action.type) {
-
   case 'PLAY': {
-    if (state.running) {
-      return {
-        ...state,
-        paused: false
-      }
+    if (state.running) return {
+      ...state,
+      paused: false,
+      selectedCell: undefined,
     }
 
     const f0 = state.functions[0]
@@ -33,45 +31,36 @@ const reducer = (state = initialState, action) => {
       ...state,
       instructionsStack: [ ...f0.instructions ],
       paused: false,
-      running: true
+      running: true,
+      selectedCell: undefined,
     }
   }
 
   case 'PAUSE': {
-    if (state.paused) {
-      return state
-    }
-
-    return {
-      ...state,
-      paused: true
-    }
+    if (state.paused) return { ...state, selectedCell: undefined }
+    return { ...state, paused: true, selectedCell: undefined }
   }
 
-  case 'TOGGLE_PAUSE': {
-    return {
-      ...state,
-      paused: !state.paused
-    }
+  case 'TOGGLE_PAUSE': return {
+    ...state,
+    paused: !state.paused,
+    selectedCell: undefined,
   }
 
   case 'RESTART': {
-    const functions = _.cloneDeep(state.functions)
-    // functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
-
     return {
-      ...initialState, // TODO: rm dependency 'initialState'
+      ...initialState,
       speed: state.speed,
-      selectedCell: state.selectedCell,
-      functions
+      functions: state.functions,
+      selectedCell: undefined,
     }
   }
-
-  case 'CLEAR': {
-    return {
-      ...state,
-      functions: _.cloneDeep(level.functions) // TODO: rm dependency 'level'
-    }
+  // TODO: rm dependency 'initialState'
+  case 'CLEAR': return {
+    ...state,
+    instructionsStack: [],
+    functions: level.functions,
+    selectedCell: undefined,
   }
 
   case 'CHANGE_SPEED': {
@@ -79,7 +68,8 @@ const reducer = (state = initialState, action) => {
 
     return {
       ...state,
-      speed: state.speed * 2 > maxSpeed ? 1 : state.speed * 2
+      speed: state.speed * 2 > maxSpeed ? 1 : state.speed * 2,
+      selectedCell: undefined,
     }
   }
 
@@ -92,16 +82,22 @@ const reducer = (state = initialState, action) => {
       instructionsStack: [
         ...state.instructionsStack.slice(1)
       ],
-      ended: !currentInstruction
+      ended: !currentInstruction,
+      selectedCell: undefined,
     }
   }
 
   case 'SELECT_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
-    functions.forEach(f => f.instructions.forEach(i => { i.selected = false }))
+    const selected = state.selectedCell
     const { functionId, instructionId } = action
     const instruction = functions[functionId].instructions[instructionId]
-    instruction.selected = !instruction.selected
+
+    if (selected
+      && selected.functionId === functionId
+      && selected.instructionId === instructionId) {
+      return { ...state, functions, selectedCell: undefined }
+    }
 
     return {
       ...state,
@@ -109,24 +105,36 @@ const reducer = (state = initialState, action) => {
       selectedCell: {
         functionId,
         instructionId,
-        instruction
-      }
+        instruction,
+      },
     }
   }
 
+  case 'DESELECT_FUNCTION_INSTRUCTION': return { ...state, selectedCell: undefined }
   case 'SET_FUNCTION_INSTRUCTION': {
     const functions = _.cloneDeep(state.functions)
     const { functionId, instructionId, instruction } = action
-    const toggle = (a, b) => Object.keys(b).forEach(key => {
-      (a[key] === b[key]) ? delete a[key] : a[key] = b[key]
-    })
-
-    toggle(functions[functionId].instructions[instructionId], instruction)
-
-    return {
-      ...state,
-      functions
+    const instructions = functions[functionId].instructions
+    if (instruction.condition === undefined) {
+      if (contain(instruction, instructions[instructionId])) {
+        instructions[instructionId] = {
+          condition: instructions[instructionId].condition,
+        }
+      } else {
+        instructions[instructionId] = {
+          condition: instructions[instructionId].condition,
+          ...instruction,
+        }
+      }
+    } else if (instructions[instructionId].condition === instruction.condition) {
+      instructions[instructionId].condition = undefined
+    } else {
+      instructions[instructionId] = {
+        ...instructions[instructionId],
+        condition: instruction.condition,
+      }
     }
+    return { ...state, functions }
   }
 
   case 'MOVE_FORWARD': {

@@ -5,19 +5,18 @@ import { maxDelayBetweenInstructions } from './constants'
 let lastInstructionTime = Date.now()
 
 export const update = () => {
-  const state = store.getState()
-  const game = state.game
+  const { game: { speed, ended, paused } } = store.getState()
 
   const now = Date.now()
   const deltaTime = now - lastInstructionTime
 
-  const delayBetweenInstructions = maxDelayBetweenInstructions / game.speed
-  if (!game.ended && !game.paused && deltaTime > delayBetweenInstructions) {
+  const delayBetweenInstructions = maxDelayBetweenInstructions / speed
+  if (!ended && !paused && deltaTime > delayBetweenInstructions) {
     store.dispatch(next())
     lastInstructionTime = now
   }
 
-  if (!game.ended) {
+  if (!ended) {
     requestAnimationFrame(update)
   }
 }

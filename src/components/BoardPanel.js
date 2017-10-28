@@ -1,33 +1,22 @@
 import React from 'react'
+import Block from './Block'
+import store from '../store'
 import './BoardPanel.css'
-import _ from 'lodash'
 
-import { colors } from '../constants'
+const getIcon = (player, x, y, b) => {
+  if (player.y === y && player.x === x) return 'player'+ player.direction
+  return b > 3 ? 'star' : 'blank'
+}
 
 const BoardPanel = ({ board, player }) => {
-  const boardBlocks = _.flatMap(board).map((b, index) => {
-    const style = {
-      backgroundColor: colors[b % 4]
-    }
-
-    const playerArrowGraphic = ['←', '↑', '→', '↓'][player.direction]
-    const playerBlock = (player.y * 10 + player.x === index) ?
-      <div className='PlayerBlock'>{playerArrowGraphic}</div> : ''
-
-    const starGraphic = '☆'
-    const starBlock = b > 3 ?
-      <div className='StarBlock'>{starGraphic}</div> : ''
-
-    return (
-      <div className='BoardBlock' key={index} style={style}>
-        {playerBlock}
-        {starBlock}
-      </div>
-    )
-  })
+  const boardBlocks = board.map((rowData, y) =>
+    <div className='row' key={y}>{
+      rowData.map((b, x) =>
+        <Block key={`${x}-${y}`} color={b % 4} type={getIcon(player, x, y, b)} />)
+    }</div>)
 
   return (
-    <div className='BoardPanel'>
+    <div className='BoardPanel' onClick={() => store.dispatch({ type: 'DESELECT_FUNCTION_INSTRUCTION' })}>
       {boardBlocks}
     </div>
   )

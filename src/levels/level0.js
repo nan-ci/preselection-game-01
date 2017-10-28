@@ -24,7 +24,7 @@ const level1 = {
       length: 2
     }
   ],
-  activeInstructions: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+  activeInstructions: [ 'forward', 'F0' ],
 }
 
 export default level1

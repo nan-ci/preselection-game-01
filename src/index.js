@@ -2,14 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import './index.css'
-import App from './containers/App'
+import { Game } from './components'
+
 import registerServiceWorker from './registerServiceWorker'
 import store from './store'
 import './game'
 
 ReactDOM.render((
   <Provider store={store}>
-    <App />
+    <Game />
   </Provider>
 ), document.getElementById('root'))
 

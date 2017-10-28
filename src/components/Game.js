@@ -10,6 +10,13 @@ import {
 } from '../components'
 
 import store from '../store'
+import { isMobile } from '../lib/utils'
+
+const getGameMessage = game => {
+  if (game.stars) return 'WIN'
+  if (game.board[game.player.y][game.player.x]) return 'DEAD'
+  return game.currentInstruction ? '' : 'EMPTY STACK'
+}
 
 class Game extends React.Component {
 
@@ -22,23 +29,20 @@ class Game extends React.Component {
   }
 
   render() {
-    const game = store.getState().game
-
-    const message = game.ended && (
-      !game.stars ? 'WIN' :
-      !game.board[game.player.y][game.player.x] ? 'DEAD' :
-      !game.currentInstruction ? 'EMPTY STACK' : ''
-    )
+    const { game } = store.getState()
+    const message = game.ended && getGameMessage(game)
 
     return (
-      <div className='GameContainer'>
-        <StackPanel instructions={game.instructionsStack} />
-        <BoardPanel board={game.board} player={game.player} />
-        <ControlsPanel />
+      <div id="Game">
         <InstructionsPanel selectedCell={game.selectedCell} activeInstructions={game.activeInstructions} />
-        <FunctionsPanel functions={game.functions} />
-        <div className='Message'>
-          {message}
+        <div id="PanelTop">
+          <StackPanel instructions={game.instructionsStack} />
+          <BoardPanel board={game.board} player={game.player} />
+          <ControlsPanel />
+        </div>
+        <div id="PanelBottom">
+          <FunctionsPanel selectedCell={game.selectedCell} functions={game.functions} />
+          <div className='Message'>{message}</div>
         </div>
       </div>
     )

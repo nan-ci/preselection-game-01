@@ -1,24 +1,17 @@
 .BoardPanel {
-  background-color: grey;
-  height: 400px;
-  margin-bottom: 3px;
+  flex-grow: 1;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  padding: 3px;
 }
 
-.BoardBlock {
-  background-color: darkgrey;
-  width: 40px;
-  height: 40px;
-  box-shadow: 0px 0px 0px 1px black inset;
+.BoardPanel .row {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
-.PlayerBlock, .StarBlock {
-  background-color: clear;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 40px;
+.BoardPanel .block {
+  flex-grow: 1;
+  padding-bottom: 10%;
 }
