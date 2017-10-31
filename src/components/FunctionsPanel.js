@@ -1,9 +1,11 @@
 import React from 'react'
 import './FunctionsPanel.css'
+import GetBoundingRect from '../containers/GetBoundingRect'
 
 import store from '../store'
 import { getType } from '../lib/utils'
 import Block from './Block'
+import InstructionsPanel from './InstructionsPanel'
 import { selectFunctionInstruction } from '../actions/game'
 
 
@@ -36,17 +38,16 @@ const FunctionBlock = ({ func: f, selectedCell: selected }) => {
   )
 }
 
-const FunctionsPanel = ({ functions, selectedCell }) => {
-  const functionsBlocks = functions.map((f, index) => {
-    return (
-      <FunctionBlock key={index} func={f} selectedCell={selectedCell} />
-    )
-  })
+const FunctionsPanel = ({ game }) => {
+  const { selectedCell, activeInstructions, functions } = game
+  const functionsBlocks = functions.map((f, index) =>
+    <FunctionBlock key={index} func={f} selectedCell={selectedCell} />)
 
   return (
-    <div className='FunctionsPanel'>
+    <GetBoundingRect className='FunctionsPanel'>
+      <InstructionsPanel selectedCell={selectedCell} activeInstructions={activeInstructions} />
       {functionsBlocks}
-    </div>
+    </GetBoundingRect>
   )
 }
 

@@ -6,7 +6,6 @@ import {
   StackPanel,
   ControlsPanel,
   FunctionsPanel,
-  InstructionsPanel,
 } from '../components'
 
 import store from '../store'
@@ -34,14 +33,13 @@ class Game extends React.Component {
 
     return (
       <div id="Game">
-        <InstructionsPanel selectedCell={game.selectedCell} activeInstructions={game.activeInstructions} />
         <div id="PanelTop">
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />
           <ControlsPanel />
         </div>
         <div id="PanelBottom">
-          <FunctionsPanel selectedCell={game.selectedCell} functions={game.functions} />
+          <FunctionsPanel game={game} />
           <div className='Message'>{message}</div>
         </div>
       </div>
