@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { contain } from '../lib/utils'
 import { level3 as level } from '../levels'
+import { stackMaxSize } from '../constants'
 
 const hasStar = cell => cell > 3
 const pickupStar = cell => cell -= 4
@@ -14,6 +15,7 @@ const initialState = {
   paused: true,
   running: false,
   ended: false,
+  message: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -83,6 +85,7 @@ const reducer = (state = initialState, action) => {
         ...state.instructionsStack.slice(1)
       ],
       ended: !currentInstruction,
+      message: !currentInstruction ? 'EMPTY STACK' : '',
       selectedCell: undefined,
     }
   }
@@ -167,7 +170,8 @@ const reducer = (state = initialState, action) => {
       board,
       player: p,
       stars,
-      ended: !stars || !board[p.y][p.x]
+      ended: !stars || !board[p.y][p.x],
+      message: !stars ? 'WIN' : !board[p.y][p.x] ? 'DEAD' : ''
     }
   }
 
@@ -233,12 +237,16 @@ const reducer = (state = initialState, action) => {
     }
     const instructions = state.functions[action.id].instructions
 
+    const stack = [
+      ...instructions,
+      ...state.instructionsStack
+    ]
+
     return {
       ...state,
-      instructionsStack: [
-        ...instructions,
-        ...state.instructionsStack
-      ]
+      instructionsStack: stack,
+      ended: stack.length > stackMaxSize,
+      message: stack.length > stackMaxSize ? 'MAX CALL STACK' : ''
     }
   }
 

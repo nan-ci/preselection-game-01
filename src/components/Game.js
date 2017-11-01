@@ -11,12 +11,6 @@ import {
 import store from '../store'
 import { isMobile } from '../lib/utils'
 
-const getGameMessage = game => {
-  if (game.stars) return 'WIN'
-  if (game.board[game.player.y][game.player.x]) return 'DEAD'
-  return game.currentInstruction ? '' : 'EMPTY STACK'
-}
-
 class Game extends React.Component {
 
   componentDidMount() {
@@ -29,7 +23,6 @@ class Game extends React.Component {
 
   render() {
     const { game } = store.getState()
-    const message = game.ended && getGameMessage(game)
 
     return (
       <div id="Game">
@@ -40,7 +33,7 @@ class Game extends React.Component {
         </div>
         <div id="PanelBottom">
           <FunctionsPanel game={game} />
-          <div className='Message'>{message}</div>
+          <div className='Message'>{game.message}</div>
         </div>
       </div>
     )
