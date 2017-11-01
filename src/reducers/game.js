@@ -5,6 +5,8 @@ import { stackMaxSize } from '../constants'
 
 const hasStar = cell => cell > 3
 const pickupStar = cell => cell -= 4
+const isPlayerOutOfBounds = p => p.x < 0 || p.x > 9 || p.y < 0 || p.y > 9
+const isPlayerDead = (p, board) => isPlayerOutOfBounds(p) || !board[p.y][p.x]
 
 const initialState = {
   ...level,
@@ -142,6 +144,8 @@ const reducer = (state = initialState, action) => {
 
   case 'MOVE_FORWARD': {
     let p = state.player
+    let board = state.board
+    let stars = state.stars
 
     // check color condition
     if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
@@ -156,12 +160,10 @@ const reducer = (state = initialState, action) => {
     if (p.direction === 3) { p.y += 1 }
 
     // check for star
-    let board = state.board
-    let stars = state.stars
-    if (hasStar(state.board[p.y][p.x])) {
+    const playerIsDead = isPlayerDead(p, state.board)
+    if (!playerIsDead && hasStar(state.board[p.y][p.x])) {
       board = _.cloneDeep(state.board)
       board[p.y][p.x] = pickupStar(board[p.y][p.x])
-
       stars -= 1
     }
 
@@ -170,8 +172,8 @@ const reducer = (state = initialState, action) => {
       board,
       player: p,
       stars,
-      ended: !stars || !board[p.y][p.x],
-      message: !stars ? 'WIN' : !board[p.y][p.x] ? 'DEAD' : ''
+      ended: !stars || playerIsDead,
+      message: !stars ? 'WIN' : playerIsDead ? 'DEAD' : ''
     }
   }
 
