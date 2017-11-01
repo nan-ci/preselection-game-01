@@ -6,7 +6,7 @@ import './StackPanel.css'
 const StackInstructionBlock = (instruction, key) => <Block
   key={key}
   color={instruction.condition}
-  type={console.log(instruction) || getType(instruction)}
+  type={getType(instruction)}
 />
 
 const StackPanel = ({ instructions }) => (
