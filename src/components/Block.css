@@ -9,13 +9,13 @@
   background-color: #999;
 }
 .block.color-1 {
-  background-color: #bf7;
+  background-color: #bf7!important;
 }
 .block.color-2 {
-  background-color: #f7b;
+  background-color: #f7b!important;
 }
 .block.color-3 {
-  background-color: #7bf;
+  background-color: #7bf!important;
 }
 .block {
   box-shadow: inset 0 0 0 1px #333;

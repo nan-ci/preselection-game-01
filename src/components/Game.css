@@ -4,6 +4,8 @@ body, html, #Game, #root {
   margin: 0;
   overflow: hidden;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -14,11 +16,11 @@ html {
 }
 
 #Game {
-  position: relative;
-  display: flex;
+  max-width: 65vh;
   flex-direction: column;
-  max-width: 85vh;
+  position: relative;
   margin: 0 auto;
+  display: flex;
 }
 
 #PanelTop {

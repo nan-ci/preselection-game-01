@@ -11,6 +11,11 @@ import {
 import store from '../store'
 import { isMobile } from '../lib/utils'
 
+/* disable scrolling */
+const win = typeof window !== 'undefined' && window
+const doc = win && win.document
+doc && (doc.ontouchmove = e => e.preventDefault())
+
 class Game extends React.Component {
 
   componentDidMount() {
@@ -25,7 +30,7 @@ class Game extends React.Component {
     const { game } = store.getState()
 
     return (
-      <div id="Game">
+      <div id="Game" style={{color: '#BF7'}}>
         <div id="PanelTop">
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />

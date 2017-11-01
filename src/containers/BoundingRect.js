@@ -23,6 +23,8 @@ export default class Layout extends React.Component {
   componentWillUnmount () {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.getSize)
+      window.removeEventListener('orientationchange', this.getSize)
+      window.removeEventListener('fullscreenchange', this.getSize)
     }
   }
 
@@ -32,6 +34,8 @@ export default class Layout extends React.Component {
     })
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.getSize, false)
+      window.addEventListener('orientationchange', this.getSize, false)
+      window.addEventListener('fullscreenchange', this.getSize, false)
     }
     this.getSize()
   }

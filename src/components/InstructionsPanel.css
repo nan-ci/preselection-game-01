@@ -1,9 +1,9 @@
 .InstructionsPanel {
-  width: 96%;
+  width: 100%;
   position: absolute;
-  bottom: 0;
-  background: #000000ba;
-  padding: 2%;
+  background: #000000bb;
+  padding: 1vh;
+  box-sizing: border-box;
 }
 
 .InstructionsPanel > .InstructionWrapper {
@@ -15,5 +15,7 @@
 }
 
 .InstructionsPanel .block {
-  padding: 5.4%;
+  height: 8vh;
+  width: 8vh;
+  margin: 1vh;
 }

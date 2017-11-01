@@ -25,8 +25,10 @@ const level0 = {
         { type: 'ROTATE_LEFT', condition: 3 },
         { type: 'REPEAT_FUNCTION', id: 0 },
       ],
-      length: 6
-    }
+      length: 10
+    },
+    { id: 1, instructions: [], length: 10 },
+    { id: 2, instructions: [], length: 10 },
   ],
   activeInstructions: [
     'left',
@@ -39,6 +41,8 @@ const level0 = {
     'P2',
     'P3',
     'F0',
+    'F1',
+    'F2',
   ],
 }
 
