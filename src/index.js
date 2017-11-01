@@ -1,16 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import './index.css'
-import { Game } from './components'
-
+import { ConnectedRouter } from 'react-router-redux'
+import App from './containers/App'
 import registerServiceWorker from './registerServiceWorker'
-import store from './store'
+import store, { history } from './store'
+
 import './game'
+import './index.css'
 
 ReactDOM.render((
   <Provider store={store}>
-    <Game />
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
   </Provider>
 ), document.getElementById('root'))
 
