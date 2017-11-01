@@ -1,6 +1,6 @@
 import React from 'react'
 import './FunctionsPanel.css'
-import GetBoundingRect from '../containers/GetBoundingRect'
+import BoundingRect from '../containers/BoundingRect'
 
 import store from '../store'
 import { getType } from '../lib/utils'
@@ -44,10 +44,10 @@ const FunctionsPanel = ({ game }) => {
     <FunctionBlock key={index} func={f} selectedCell={selectedCell} />)
 
   return (
-    <GetBoundingRect className='FunctionsPanel'>
+    <BoundingRect className='FunctionsPanel'>
       <InstructionsPanel selectedCell={selectedCell} activeInstructions={activeInstructions} />
       {functionsBlocks}
-    </GetBoundingRect>
+    </BoundingRect>
   )
 }
 
