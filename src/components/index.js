@@ -7,6 +7,8 @@ import FunctionsPanel from './FunctionsPanel'
 import InstructionsPanel from './InstructionsPanel'
 
 import Editor from './Editor'
+import EditorToolsPanel from './EditorToolsPanel'
+import EditorBoardPanel from './EditorBoardPanel'
 
 
 export {
@@ -18,4 +20,6 @@ export {
   FunctionsPanel,
   InstructionsPanel,
   Editor,
+  EditorToolsPanel,
+  EditorBoardPanel,
 }
