@@ -9,7 +9,6 @@ import {
 } from '../components'
 
 import store from '../store'
-import { isMobile } from '../lib/utils'
 
 /* disable scrolling */
 const win = typeof window !== 'undefined' && window
