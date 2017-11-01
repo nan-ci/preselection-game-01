@@ -36,10 +36,15 @@ export const repeatFunction = (id, condition = 0) => {
 }
 
 export const selectFunctionInstruction = ({ functionId, instructionId }) => {
-  return {
-    type: 'SELECT_FUNCTION_INSTRUCTION',
-    functionId,
-    instructionId
+  return (dispatch, getState) => {
+    if (getState().game.isRunning) {
+      dispatch(restart())
+    }
+    dispatch({
+      type: 'SELECT_FUNCTION_INSTRUCTION',
+      functionId,
+      instructionId
+    })
   }
 }
 
@@ -68,7 +73,7 @@ export const step = () => {
   return (dispatch, getState) => {
     const game = getState().game
 
-    if (!game.running) {
+    if (!game.isRunning) {
       dispatch(play())
       game.paused && dispatch(pause())
     } else {

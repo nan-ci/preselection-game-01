@@ -25,9 +25,9 @@ let lastRunningState = false
 store.subscribe(() => {
   const tmpLastRunningState = lastRunningState
   const game = store.getState().game
-  lastRunningState = game.running
+  lastRunningState = game.isRunning
 
-  if (game.running !== tmpLastRunningState) {
+  if (game.isRunning !== tmpLastRunningState) {
     update()
   }
 })

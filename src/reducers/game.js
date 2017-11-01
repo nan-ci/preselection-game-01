@@ -15,7 +15,7 @@ const initialState = {
   instructionsStack: [],
   selectedCell: undefined,
   paused: true,
-  running: false,
+  isRunning: false,
   ended: false,
   message: '',
 }
@@ -23,7 +23,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
   case 'PLAY': {
-    if (state.running) return {
+    if (state.isRunning) return {
       ...state,
       paused: false,
       selectedCell: undefined,
@@ -35,7 +35,7 @@ const reducer = (state = initialState, action) => {
       ...state,
       instructionsStack: [ ...f0.instructions ],
       paused: false,
-      running: true,
+      isRunning: true,
       selectedCell: undefined,
     }
   }
