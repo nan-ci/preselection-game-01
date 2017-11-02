@@ -1,5 +1,6 @@
 import { level2 as level } from '../levels'
 import { saveAs } from 'file-saver'
+import stringify from 'json-stringify-pretty-compact'
 
 const hasStar = cell => cell > 3
 
@@ -9,6 +10,15 @@ const initialState = {
   isSelecting: false,
   selectedCells: []
 }
+
+
+const saveLevel = level => {
+  const text = stringify(level)
+  const blob = new Blob([text], {type: "text/plain;charset=utf-8"})
+
+  saveAs(blob, `level.json`)
+}
+
 
 const reducer = (state = initialState, action) => {
 
@@ -99,10 +109,3 @@ const reducer = (state = initialState, action) => {
 }
 
 export default reducer
-
-const saveLevel = level => {
-  const text = JSON.stringify(level, null, 2)
-  const blob = new Blob([text], {type: "text/plain;charset=utf-8"})
-
-  saveAs(blob, `level.json`)
-}
