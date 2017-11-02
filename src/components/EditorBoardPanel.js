@@ -11,8 +11,8 @@ const getIcon = (player, x, y, b) => {
 
 const selectCellOnMouseDown = index => {
   return event => {
-    store.dispatch({type: 'START_SELECTING'})
-    store.dispatch({type: 'SELECT_CELL', index})
+    store.dispatch({type: 'START_SELECTION', index})
+    store.dispatch({type: 'TOGGLE_CELL', index})
   }
 }
 
@@ -20,12 +20,12 @@ const selectCellOnMouseOver = index => {
   return event => {
     const state = store.getState().editor
     if (state.isSelecting) {
-      store.dispatch({type: 'SELECT_CELL', index})
+      store.dispatch({type: 'TOGGLE_CELL', index})
     }
   }
 }
 
-const EditorBoardPanel = ({ isEditorMode, board, player, selectedCells }) => {
+const EditorBoardPanel = ({ isEditorMode, board, player, selectedCellsIndexes }) => {
 
   const boardBlocks = board.map((rowData, y) =>
     <div className='row' key={y}>{
@@ -38,7 +38,7 @@ const EditorBoardPanel = ({ isEditorMode, board, player, selectedCells }) => {
           type={getIcon(player, x, y, b)}
           onMouseDown={selectCellOnMouseDown(index)}
           onMouseOver={selectCellOnMouseOver(index)}
-          className={selectedCells[index] ? 'selected' : ''}
+          className={selectedCellsIndexes.indexOf(index) !== -1 ? 'selected' : ''}
           />
       })
     }</div>)
@@ -52,7 +52,7 @@ const EditorBoardPanel = ({ isEditorMode, board, player, selectedCells }) => {
 
 // move to componentDidMount
 document.documentElement.addEventListener('mouseup', () => {
-  store.dispatch({type: 'STOP_SELECTING'})
+  store.dispatch({type: 'STOP_SELECTION'})
 })
 
 export default EditorBoardPanel

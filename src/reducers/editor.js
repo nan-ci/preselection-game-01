@@ -4,11 +4,31 @@ import stringify from 'json-stringify-pretty-compact'
 
 const hasStar = cell => cell > 3
 
+const has = (array, value) => array.indexOf(value) !== -1
+const toggle = (array, value) => {
+  const index = array.indexOf(value)
+
+  if (index !== -1) {
+    console.log('exist')
+    return [
+      ...array.slice(0, index),
+      ...array.slice(index + 1)
+    ]
+  }
+
+  console.log('not exist')
+  return [
+    ...array,
+    value
+  ]
+}
+
 const initialState = {
   level,
   ...level,
   isSelecting: false,
-  selectedCells: []
+  toggleShouldDeselect: false,
+  selectedCellsIndexes: []
 }
 
 
@@ -24,42 +44,48 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-  case 'START_SELECTING': {
+  case 'START_SELECTION': {
     return {
       ...state,
-      isSelecting: true
+      isSelecting: true,
+      toggleShouldDeselect: has(state.selectedCellsIndexes, action.index)
     }
   }
 
-  case 'STOP_SELECTING': {
+  case 'STOP_SELECTION': {
     return {
       ...state,
       isSelecting: false
     }
   }
 
-  case 'SELECT_CELL': {
-    const selectedCells = [...state.selectedCells]
-    selectedCells[action.index] = !selectedCells[action.index]
+  case 'TOGGLE_CELL': {
+    const selected = has(state.selectedCellsIndexes, action.index)
+
+    if (selected !== state.toggleShouldDeselect) {
+      return state
+    }
 
     return {
       ...state,
-      selectedCells
+      selectedCellsIndexes: toggle(state.selectedCellsIndexes, action.index)
     }
   }
 
   case 'DESELECT_ALL': {
     return {
       ...state,
-      selectedCells: []
+      selectedCellsIndexes: []
     }
   }
 
   case 'PAINT': {
     const color = action.color
     const board = state.board.map((row, y) =>
-      row.map((cell, x) =>
-        state.selectedCells[y * 10 + x] ? (hasStar(cell) ? 4 + color : color) : cell))
+      row.map((cell, x) => {
+        const index = y * 10 + x
+        return state.selectedCellsIndexes.indexOf(index) !== -1 ? (hasStar(cell) ? 4 + color : color) : cell
+      }))
 
     return {
       ...state,
@@ -68,9 +94,9 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'SET_PLAYER': {
-    const index = state.selectedCells.indexOf(true)
+    const index = state.selectedCellsIndexes[0]
 
-    if (index === -1) {
+    if (!index) {
       return state
     }
 
@@ -86,8 +112,10 @@ const reducer = (state = initialState, action) => {
 
   case 'SET_STAR': {
     const board = state.board.map((row, y) =>
-      row.map((cell, x) =>
-        state.selectedCells[y * 10 + x] ? (hasStar(cell) ? cell - 4 : cell + 4) : cell))
+      row.map((cell, x) => {
+        const index = y * 10 + x
+        return state.selectedCellsIndexes.indexOf(index) !== -1 ? (hasStar(cell) ? cell - 4 : cell + 4) : cell
+      }))
 
     return {
       ...state,
