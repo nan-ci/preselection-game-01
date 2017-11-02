@@ -8,6 +8,7 @@ const EditorToolsPanel = ({ selectedCell, activeInstructions }) => {
   return (
     <div className='EditorToolsPanel'>
       <button onClick={() => store.dispatch({type: 'SAVE_LEVEL'})}>save</button>
+      <button onClick={() => store.dispatch({type: 'CLEAR_BOARD'})}>Clear board</button>
       <button onClick={() => store.dispatch({type: 'DESELECT_ALL'})}>Deselect All</button>
       <button onClick={() => store.dispatch({type: 'PAINT', color: 0})}>Paint 0</button>
       <button onClick={() => store.dispatch({type: 'PAINT', color: 1})}>Paint 1</button>

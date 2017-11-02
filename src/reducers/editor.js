@@ -1,6 +1,12 @@
-import { level2 as level } from '../levels'
+import { levelClear as level } from '../levels'
 import { saveAs } from 'file-saver'
 import stringify from 'json-stringify-pretty-compact'
+
+const Array2d = (w, h = w, fillWith = undefined) =>
+  Array(h).fill(fillWith).map(e => e = Array(w).fill(fillWith))
+
+const clearBoard = () => Array2d(10, 10, 0)
+const clearPlayer = () => ({ x: -1, y: -1, direction: 0 })
 
 const hasStar = cell => cell > 3
 
@@ -9,14 +15,12 @@ const toggle = (array, value) => {
   const index = array.indexOf(value)
 
   if (index !== -1) {
-    console.log('exist')
     return [
       ...array.slice(0, index),
       ...array.slice(index + 1)
     ]
   }
 
-  console.log('not exist')
   return [
     ...array,
     value
@@ -76,6 +80,15 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       selectedCellsIndexes: []
+    }
+  }
+
+  case 'CLEAR_BOARD': {
+    return {
+      ...state,
+      board: clearBoard(),
+      player: clearPlayer(),
+      stars: 0,
     }
   }
 
