@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { contain } from '../lib/utils'
+import { contains } from '../lib/utils'
 import { level3 as level } from '../levels'
 import { stackMaxSize } from '../constants'
 
@@ -122,7 +122,7 @@ const reducer = (state = initialState, action) => {
     const { functionId, instructionId, instruction } = action
     const instructions = functions[functionId].instructions
     if (instruction.condition === undefined) {
-      if (contain(instruction, instructions[instructionId])) {
+      if (contains(instruction, instructions[instructionId])) {
         instructions[instructionId] = {
           condition: instructions[instructionId].condition,
         }

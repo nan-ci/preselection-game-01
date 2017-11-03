@@ -2,39 +2,19 @@ import { levelClear as level } from '../levels'
 import { saveAs } from 'file-saver'
 import stringify from 'json-stringify-pretty-compact'
 
-const Array2d = (w, h = w, fillWith = undefined) =>
-  Array(h).fill(fillWith).map(e => e = Array(w).fill(fillWith))
+import { Array2d } from '../lib/utils'
 
 const clearBoard = () => Array2d(10, 10, 0)
 const clearPlayer = () => ({ x: -1, y: -1, direction: 0 })
 
 const hasStar = cell => cell > 3
 
+
 const has = (array, value) => array.indexOf(value) !== -1
 const toggle = (array, value) => {
-  const index = array.indexOf(value)
-
-  if (index !== -1) {
-    return [
-      ...array.slice(0, index),
-      ...array.slice(index + 1)
-    ]
-  }
-
-  return [
-    ...array,
-    value
-  ]
+  const i = array.indexOf(value)
+  return i !== -1 ? [...array.slice(0, i), ...array.slice(i + 1)] : [...array, value]
 }
-
-const initialState = {
-  level,
-  ...level,
-  isSelecting: false,
-  toggleShouldDeselect: false,
-  selectedCellsIndexes: []
-}
-
 
 const saveLevel = level => {
   const text = stringify(level)
@@ -43,6 +23,13 @@ const saveLevel = level => {
   saveAs(blob, `level.json`)
 }
 
+
+const initialState = {
+  ...level,
+  isSelecting: false,
+  toggleShouldDeselect: false,
+  selectedCellsIndexes: []
+}
 
 const reducer = (state = initialState, action) => {
 
@@ -73,6 +60,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       selectedCellsIndexes: toggle(state.selectedCellsIndexes, action.index)
+    }
+  }
+
+  case 'TOGGLE_INSTRUCTION': {
+    return {
+      ...state,
+      activeInstructions: toggle(state.activeInstructions, action.instructionId)
     }
   }
 
@@ -136,9 +130,11 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-
   case 'SAVE_LEVEL': {
-    saveLevel(state.level)
+    const { board, player, stars, functions, activeInstructions } = state
+    const level = { board, player, stars, functions, activeInstructions }
+
+    saveLevel(level)
 
     return state
   }

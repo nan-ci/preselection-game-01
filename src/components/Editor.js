@@ -4,7 +4,7 @@ import './Editor.css'
 import {
   EditorBoardPanel,
   EditorToolsPanel,
-  // InstructionsPanel,
+  EditorInstructionsPanel,
 } from '../components'
 
 import store from '../store'
@@ -25,9 +25,9 @@ class Editor extends React.Component {
 
     return (
       <div className='EditorContainer'>
-        Welcome to the Editor!
         <EditorBoardPanel board={state.board} player={state.player} selectedCellsIndexes={state.selectedCellsIndexes} />
         <EditorToolsPanel />
+        <EditorInstructionsPanel activeInstructions={state.activeInstructions} />
       </div>
     )
   }
