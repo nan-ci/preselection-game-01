@@ -3,7 +3,7 @@ import './EditorToolsPanel.css'
 
 import store from '../store'
 
-const EditorToolsPanel = ({ selectedCell, activeInstructions }) => {
+const EditorToolsPanel = () => {
 
   return (
     <div className='EditorToolsPanel'>

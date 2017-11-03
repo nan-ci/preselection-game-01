@@ -7,6 +7,7 @@ import { Array2d } from '../lib/utils'
 
 const clearBoard = () => Array2d(10, 10, 0)
 const clearPlayer = () => ({ x: -1, y: -1, direction: 0 })
+const clearFunction = (length = 1) => ({instructions: [], length })
 
 const hasStar = cell => cell > 3
 const addStar = cell => cell + 4
@@ -31,7 +32,7 @@ const initialState = {
   ...level,
   isSelecting: false,
   toggleShouldDeselect: false,
-  selectedCellsIndexes: []
+  selectedCellsIndexes: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -129,6 +130,22 @@ const reducer = (state = initialState, action) => {
       ...state,
       board,
       stars: countStars(board)
+    }
+  }
+
+  case 'SET_FUNCTION_LENGTH': {
+    const { functionId: id, length } = action
+    const functions = [...state.functions]
+
+    if (length > 0) {
+      functions[id] = clearFunction(action.length)
+    } else {
+      functions.splice(id, 1)
+    }
+
+    return {
+      ...state,
+      functions
     }
   }
 

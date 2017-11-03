@@ -10,6 +10,7 @@ import Editor from './Editor'
 import EditorToolsPanel from './EditorToolsPanel'
 import EditorBoardPanel from './EditorBoardPanel'
 import EditorInstructionsPanel from './EditorInstructionsPanel'
+import EditorFunctionsPanel from './EditorFunctionsPanel'
 
 export {
   Game,
@@ -23,4 +24,5 @@ export {
   EditorToolsPanel,
   EditorBoardPanel,
   EditorInstructionsPanel,
+  EditorFunctionsPanel,
 }

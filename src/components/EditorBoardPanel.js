@@ -44,7 +44,7 @@ const EditorBoardPanel = ({ isEditorMode, board, player, selectedCellsIndexes })
     }</div>)
 
   return (
-    <div className='BoardPanel' onClick={() => store.dispatch({ type: 'DESELECT_FUNCTION_INSTRUCTION' })}>
+    <div className='BoardPanel'>
       {boardBlocks}
     </div>
   )
