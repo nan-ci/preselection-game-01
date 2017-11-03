@@ -55,4 +55,9 @@ document.documentElement.addEventListener('mouseup', () => {
   store.dispatch({type: 'STOP_SELECTION'})
 })
 
+document.documentElement.addEventListener('keydown', e => {
+  e.key === 'Escape' && store.dispatch({type: 'DESELECT_ALL'})
+})
+
+
 export default EditorBoardPanel
