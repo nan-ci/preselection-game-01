@@ -13,7 +13,7 @@ const hasStar = cell => cell > 3
 const addStar = cell => cell + 4
 const delStar = cell => cell - 4
 const toggleStar = cell => hasStar(cell) ? delStar(cell) : addStar(cell)
-const countStars = board => _.flatMap(board, cell => cell).filter(hasStar).length
+const countStars = board => _.flatMap(board, _ => _).filter(hasStar).length
 
 const toggle = (array, value) => {
   const i = array.indexOf(value)
@@ -87,6 +87,12 @@ const reducer = (state = initialState, action) => {
       board: clearBoard(),
       player: clearPlayer(),
       stars: 0,
+    }
+  }
+
+  case 'RESET': {
+    return {
+      ...initialState
     }
   }
 
