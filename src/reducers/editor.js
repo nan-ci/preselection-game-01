@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { levelClear as level } from '../levels'
 import { saveAs } from 'file-saver'
 import stringify from 'json-stringify-pretty-compact'
@@ -8,9 +9,11 @@ const clearBoard = () => Array2d(10, 10, 0)
 const clearPlayer = () => ({ x: -1, y: -1, direction: 0 })
 
 const hasStar = cell => cell > 3
+const addStar = cell => cell + 4
+const delStar = cell => cell - 4
+const toggleStar = cell => hasStar(cell) ? delStar(cell) : addStar(cell)
+const countStars = board => _.flatMap(board, cell => cell).filter(hasStar).length
 
-
-const has = (array, value) => array.indexOf(value) !== -1
 const toggle = (array, value) => {
   const i = array.indexOf(value)
   return i !== -1 ? [...array.slice(0, i), ...array.slice(i + 1)] : [...array, value]
@@ -39,7 +42,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       isSelecting: true,
-      toggleShouldDeselect: has(state.selectedCellsIndexes, action.index)
+      toggleShouldDeselect: state.selectedCellsIndexes.includes(action.index)
     }
   }
 
@@ -51,7 +54,7 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'TOGGLE_CELL': {
-    const selected = has(state.selectedCellsIndexes, action.index)
+    const selected = state.selectedCellsIndexes.includes(action.index)
 
     if (selected !== state.toggleShouldDeselect) {
       return state
@@ -91,7 +94,7 @@ const reducer = (state = initialState, action) => {
     const board = state.board.map((row, y) =>
       row.map((cell, x) => {
         const index = y * 10 + x
-        return state.selectedCellsIndexes.indexOf(index) !== -1 ? (hasStar(cell) ? 4 + color : color) : cell
+        return state.selectedCellsIndexes.includes(index) ? (hasStar(cell) ? 4 + color : color) : cell
       }))
 
     return {
@@ -119,14 +122,13 @@ const reducer = (state = initialState, action) => {
 
   case 'SET_STAR': {
     const board = state.board.map((row, y) =>
-      row.map((cell, x) => {
-        const index = y * 10 + x
-        return state.selectedCellsIndexes.indexOf(index) !== -1 ? (hasStar(cell) ? cell - 4 : cell + 4) : cell
-      }))
+      row.map((cell, x) => cell && state.selectedCellsIndexes.includes(y * 10 + x)
+        ? toggleStar(cell) : cell))
 
     return {
       ...state,
-      board
+      board,
+      stars: countStars(board)
     }
   }
 
