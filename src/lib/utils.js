@@ -11,7 +11,7 @@ const getType = instruction => {
   }
 }
 
-const contain = (a, b) => {
+const contains = (a, b) => {
   if (!a) return false
   const keys = Object.keys(a)
   for (let key of keys) {
@@ -20,4 +20,13 @@ const contain = (a, b) => {
   return true
 }
 
-module.exports = { getType, contain, isMobile }
+const Array2d = (w, h = w, fillWith = undefined) =>
+  Array(h).fill(fillWith).map(e => e = Array(w).fill(fillWith))
+
+
+module.exports = {
+  isMobile,
+  getType,
+  contains,
+  Array2d,
+}

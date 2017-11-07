@@ -1,0 +1,16 @@
+.EditorFunctionsPanel {
+  background-color: grey;
+  height: 60px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.EditorFunctionsPanel label {
+  margin: 1vh;
+}
+.EditorFunctionsPanel input {
+  margin-left: 0.2vh;
+  width: 3vh;
+}

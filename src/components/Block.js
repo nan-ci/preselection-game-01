@@ -44,8 +44,13 @@ const typeImage = objMap(d => ({
 })
 typeImage.blank = {}
 
-const Block = ({ type = 'blank', color=0, onClick, className='' } = {}) => (
-  <div className={`block ${type} color-${color} ${className} ${onClick ? 'interactive' : ''}`} onClick={onClick} style={typeImage[type]}></div>
+const Block = ({ type = 'blank', color = 0, onClick, className = '', ...props } = {}) => (
+  <div
+    className={`block ${type} color-${color} ${className} ${onClick ? 'interactive' : ''}`}
+    onClick={onClick}
+    style={typeImage[type]}
+    {...props}>
+  </div>
 )
 
 export default Block

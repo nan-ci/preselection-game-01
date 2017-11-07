@@ -6,6 +6,12 @@ import ControlsPanel from './ControlsPanel'
 import FunctionsPanel from './FunctionsPanel'
 import InstructionsPanel from './InstructionsPanel'
 
+import Editor from './Editor'
+import EditorToolsPanel from './EditorToolsPanel'
+import EditorBoardPanel from './EditorBoardPanel'
+import EditorInstructionsPanel from './EditorInstructionsPanel'
+import EditorFunctionsPanel from './EditorFunctionsPanel'
+
 export {
   Game,
   Block,
@@ -14,4 +20,9 @@ export {
   ControlsPanel,
   FunctionsPanel,
   InstructionsPanel,
+  Editor,
+  EditorToolsPanel,
+  EditorBoardPanel,
+  EditorInstructionsPanel,
+  EditorFunctionsPanel,
 }

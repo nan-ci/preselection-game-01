@@ -29,7 +29,7 @@ class Game extends React.Component {
     const { game } = store.getState()
 
     return (
-      <div id="Game" style={{color: '#BF7'}}>
+      <div id="Game">
         <div id="PanelTop">
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />

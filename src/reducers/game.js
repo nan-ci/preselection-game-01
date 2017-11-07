@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { contain } from '../lib/utils'
+import { contains } from '../lib/utils'
 import { level3 as level } from '../levels'
 import { stackMaxSize } from '../constants'
 
@@ -7,6 +7,7 @@ const hasStar = cell => cell > 3
 const pickupStar = cell => cell -= 4
 const isPlayerOutOfBounds = p => p.x < 0 || p.x > 9 || p.y < 0 || p.y > 9
 const isPlayerDead = (p, board) => isPlayerOutOfBounds(p) || !board[p.y][p.x]
+
 
 const initialState = {
   ...level,
@@ -121,7 +122,7 @@ const reducer = (state = initialState, action) => {
     const { functionId, instructionId, instruction } = action
     const instructions = functions[functionId].instructions
     if (instruction.condition === undefined) {
-      if (contain(instruction, instructions[instructionId])) {
+      if (contains(instruction, instructions[instructionId])) {
         instructions[instructionId] = {
           condition: instructions[instructionId].condition,
         }
@@ -158,6 +159,16 @@ const reducer = (state = initialState, action) => {
     if (p.direction === 1) { p.y -= 1 }
     if (p.direction === 2) { p.x += 1 }
     if (p.direction === 3) { p.y += 1 }
+
+    // out of bounds
+    if (p.x < 0 || p.x > 9 || p.y < 0 || p.y > 9) {
+      console.log('out of bounds')
+      return {
+        ...state,
+        player: p,
+        ended: true
+      }
+    }
 
     // check for star
     const playerIsDead = isPlayerDead(p, state.board)

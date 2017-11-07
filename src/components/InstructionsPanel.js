@@ -3,7 +3,7 @@ import './InstructionsPanel.css'
 
 import Block from './Block'
 import store from '../store'
-import { contain } from '../lib/utils'
+import { contains } from '../lib/utils'
 import { setFunctionInstruction } from '../actions/game'
 
 const INSTRUCTIONS = {
@@ -22,11 +22,14 @@ const INSTRUCTIONS = {
 }
 
 const InstructionsPanel = ({ selectedCell, activeInstructions, size }) => {
+
   if (!selectedCell) return null
+
   const style = { bottom: size.height }
   const { game: { functions } } = store.getState()
   const { functionId, instructionId } = selectedCell
   const selectedInstruction = functions[functionId].instructions[instructionId]
+
   const instructionsButtons = activeInstructions.map(key => {
     const instruction = INSTRUCTIONS[key]
     const onClick = () => store.dispatch(setFunctionInstruction({
@@ -34,17 +37,16 @@ const InstructionsPanel = ({ selectedCell, activeInstructions, size }) => {
       instructionId,
       instruction,
     }))
-    const selected = contain(instruction, selectedInstruction) ? 'selected' : ''
-    return (
-      <Block className={selected} key={key} onClick={onClick} color={instruction.condition} type={key}/>
-    )
+    const selected = contains(instruction, selectedInstruction) ? 'selected' : ''
+
+    return <Block className={selected} key={key} onClick={onClick} color={instruction.condition} type={key}/>
   })
+
   return (
     <div className='InstructionsPanel' style={style}>
       <div className='InstructionWrapper'>{instructionsButtons}</div>
     </div>
   )
-
 }
 
 export default InstructionsPanel
