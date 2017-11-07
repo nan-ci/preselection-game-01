@@ -1,10 +1,10 @@
 export default {
   board: [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 6, 0, 0],
+    [0, 0, 0, 0, 0, 6, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 2, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -17,12 +17,8 @@ export default {
     {
       id: 0,
       instructions: [],
-      correctInstructions: [
-        { type: 'MOVE_FORWARD' },
-        { type: 'REPEAT_FUNCTION', id: 0 },
-      ],
-      length: 2
+      length: 3
     }
   ],
-  activeInstructions: [ 'forward', 'F0' ],
+  activeInstructions: [ 'left', 'forward', 'right', 'C1', 'C2', 'C3', 'F0' ],
 }

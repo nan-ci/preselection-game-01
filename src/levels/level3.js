@@ -1,4 +1,4 @@
-const level0 = {
+export default {
   board: [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
@@ -45,5 +45,3 @@ const level0 = {
     'F2',
   ],
 }
-
-export default level0
