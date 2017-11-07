@@ -25,6 +25,14 @@ const initialState = init()
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+  case 'LOAD_LEVEL': {
+    return {
+      ...init(action.level),
+      speed: state.speed,
+    }
+  }
+
   case 'PLAY': {
     if (state.isRunning) return {
       ...state,
