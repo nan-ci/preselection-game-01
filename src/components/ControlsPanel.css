@@ -12,3 +12,7 @@
   flex-grow: initial;
   padding: 50%;
 }
+
+.ControlsPanel .block.interactive:hover {
+  transform: scale(0.9);
+}

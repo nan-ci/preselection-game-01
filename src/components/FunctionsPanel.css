@@ -16,7 +16,8 @@
 }
 
 .FunctionBlock .block {
-    margin-left: -1px;
-    flex-grow: 1;
-    padding-top: 9%;
+  margin-left: -1px;
+  flex-grow: 1;
+  padding-top: 9%;
+  max-width: 9%;
 }
