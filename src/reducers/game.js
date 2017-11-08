@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { contains } from '../lib/utils'
 import { level3 as level } from '../levels'
 import { stackMaxSize } from '../constants'
@@ -94,7 +94,7 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'SELECT_FUNCTION_INSTRUCTION': {
-    const functions = _.cloneDeep(state.functions)
+    const functions = cloneDeep(state.functions)
     const selected = state.selectedCell
     const { functionId, instructionId } = action
     const instruction = functions[functionId].instructions[instructionId]
@@ -118,7 +118,7 @@ const reducer = (state = initialState, action) => {
 
   case 'DESELECT_FUNCTION_INSTRUCTION': return { ...state, selectedCell: undefined }
   case 'SET_FUNCTION_INSTRUCTION': {
-    const functions = _.cloneDeep(state.functions)
+    const functions = cloneDeep(state.functions)
     const { functionId, instructionId, instruction } = action
     const instructions = functions[functionId].instructions
     if (instruction.condition === undefined) {
@@ -173,7 +173,7 @@ const reducer = (state = initialState, action) => {
     // check for star
     const playerIsDead = isPlayerDead(p, state.board)
     if (!playerIsDead && hasStar(state.board[p.y][p.x])) {
-      board = _.cloneDeep(state.board)
+      board = cloneDeep(state.board)
       board[p.y][p.x] = pickupStar(board[p.y][p.x])
       stars -= 1
     }
@@ -232,7 +232,7 @@ const reducer = (state = initialState, action) => {
     }
 
     const color = action.color
-    const board = _.cloneDeep(state.board)
+    const board = cloneDeep(state.board)
 
     board[p.y][p.x] = hasStar(board[p.y][p.x]) ? 3 + color : color
 
