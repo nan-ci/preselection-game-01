@@ -21,11 +21,12 @@ const INSTRUCTIONS = {
   F2: { type: 'REPEAT_FUNCTION', id: 2 },
 }
 
-const InstructionsPanel = ({ selectedCell, activeInstructions, size }) => {
+const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
 
-  if (!selectedCell) return null
+  if (!selectedCell) {
+    return null
+  }
 
-  const style = { bottom: size.height }
   const { game: { functions } } = store.getState()
   const { functionId, instructionId } = selectedCell
   const selectedInstruction = functions[functionId].instructions[instructionId]
@@ -43,8 +44,8 @@ const InstructionsPanel = ({ selectedCell, activeInstructions, size }) => {
   })
 
   return (
-    <div className='InstructionsPanel' style={style}>
-      <div className='InstructionWrapper'>{instructionsButtons}</div>
+    <div className='InstructionsPanel'>
+      {instructionsButtons}
     </div>
   )
 }

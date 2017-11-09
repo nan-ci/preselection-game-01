@@ -1,21 +1,20 @@
 .InstructionsPanel {
   width: 100%;
-  position: absolute;
   background: #000000bb;
   padding: 1vh;
   box-sizing: border-box;
-}
-
-.InstructionsPanel > .InstructionWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap-reverse;
-  width: 100%;
 }
 
 .InstructionsPanel .block {
   height: 8vh;
   width: 8vh;
   margin: 1vh;
+}
+
+.hidden {
+  display: none;
 }
