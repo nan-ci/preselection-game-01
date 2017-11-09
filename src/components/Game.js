@@ -51,7 +51,6 @@ class Game extends React.Component {
         <div id="PanelBottom" className={showAlert?'blur':''}>
           <InstructionsPanel {...game} />
           <FunctionsPanel {...game} />
-          <div className='Message'>{game.message}</div>
         </div>
         <FullScreenAlertBox show={showAlert} message={game.message} buttons={alertBoxButtons} />
       </div>
