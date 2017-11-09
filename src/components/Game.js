@@ -13,7 +13,7 @@ import {
 import store from '../store'
 
 import levels from '../levels'
-let levelId = 3
+let levelId = 0
 
 const alertBoxButtons = [
   { text: 'RESTART', onClick: () => store.dispatch({type: 'RESTART'}) },
@@ -48,7 +48,7 @@ class Game extends React.Component {
           <BoardPanel board={game.board} player={game.player} />
           <ControlsPanel />
         </div>
-        <div id="PanelBottom">
+        <div id="PanelBottom" className={showAlert?'blur':''}>
           <InstructionsPanel {...game} />
           <FunctionsPanel {...game} />
           <div className='Message'>{game.message}</div>
