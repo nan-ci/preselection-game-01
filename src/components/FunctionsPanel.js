@@ -30,7 +30,7 @@ const FunctionBlock = ({ func: f, selectedCell: selected }) => {
 
   return (
     <div className='FunctionBlock'>
-      <Block className='FunctionIdBlock' type={`F${f.id}`} color='4' />
+      <Block className='FunctionIdBlock' type={`F${f.id}label`} color='4' />
       {instructionBlocks}
     </div>
   )

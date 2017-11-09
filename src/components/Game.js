@@ -13,7 +13,7 @@ import {
 import store from '../store'
 
 import levels from '../levels'
-let levelId = 2
+let levelId = 3
 
 const alertBoxButtons = [
   { text: 'RESTART', onClick: () => store.dispatch({type: 'RESTART'}) },

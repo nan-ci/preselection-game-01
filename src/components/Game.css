@@ -1,14 +1,15 @@
 #Game {
-  max-width: 65vh;
-  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
   position: relative;
   margin: 0 auto;
+  max-width: 65vh;
   display: flex;
+  flex-direction: column;
 }
 
 #PanelTop {
-  flex-direction: row;
   position: relative;
+  flex-direction: row;
 }
 
 #PanelBottom {

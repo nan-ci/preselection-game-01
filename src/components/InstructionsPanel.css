@@ -1,7 +1,7 @@
 .InstructionsPanel {
   width: 100%;
-  background: #000000bb;
-  padding: 1vh;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5vh;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -10,9 +10,9 @@
 }
 
 .InstructionsPanel .block {
-  height: 8vh;
-  width: 8vh;
-  margin: 1vh;
+  height: 6vh;
+  width: 6vh;
+  margin: 0.5vh;
 }
 
 .hidden {

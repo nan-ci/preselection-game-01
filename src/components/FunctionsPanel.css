@@ -5,18 +5,18 @@
   display: flex;
   align-items: center;
   padding: 1vh;
-  padding-left: 0;
-  background-color: rgba(255, 255, 255, 0.3);
+  // padding-left: 0;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .FunctionBlock .FunctionIdBlock {
   background-color: transparent;
   box-shadow: none;
-  margin: 0 0 0 -30vh;
+  // margin: 0 0 0 -30vh;
 }
 
 .FunctionBlock .block {
-  margin-left: -1px;
+  // margin-left: -1px;
   flex-grow: 1;
   padding-top: 9%;
   max-width: 9%;
