@@ -1,0 +1,58 @@
+#FullScreenAlertBoxWrapper {
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  // background-color: #ff0000c4;
+  display: flex;
+  flex-direction: column;
+}
+
+#FullScreenAlertBoxWrapper.hidden {
+  display: none !important;
+}
+
+#FullScreenAlertBox {
+  flex: 1;
+  position: relative;
+  margin: auto;
+  max-height: 30%;
+  background-color: #111;
+  border: 3px solid black;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+#FullScreenAlertBox > div {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#FullScreenAlertBox .message {
+  font-size: 2em;
+  color: #ccc;
+}
+
+.button {
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+#FullScreenAlertBox .button {
+  background-color: #777fff;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  min-width: 4em;
+  font-weight: bold;
+  border: 4px solid black;
+}
+
+#FullScreenAlertBox .button:hover {
+  background-color: black;
+  color: #777fff;
+}

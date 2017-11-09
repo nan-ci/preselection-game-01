@@ -22,27 +22,16 @@ it('game can be unpaused', () => {
 it('player can move forward', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 1],
       [0, 0],
     ],
     player: { x: 0, y: 0, direction: 2 },
-    stars: 1,
-    ended: false
   }
   deepFreeze(beforeState)
   const action = { type: 'MOVE_FORWARD', condition: 1 }
   const afterState = game(beforeState, action)
-  const expected = {
-    board: [
-      [1, 1],
-      [0, 0],
-    ],
-    player: { x: 1, y: 0, direction: 2 },
-    stars: 0,
-    ended: true
-  }
 
-  expect(afterState).toEqual(expected)
+  expect(afterState.player.x).toEqual(beforeState.player.x + 1)
 })
 
 it('player can rotate left', () => {

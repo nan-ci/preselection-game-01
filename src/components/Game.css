@@ -20,3 +20,7 @@
 #PanelTop, #PanelBottom {
   display: flex;
 }
+
+#PanelTop.blur, #PanelBottom.blur {
+  filter: blur(5px);
+}

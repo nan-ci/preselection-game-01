@@ -7,7 +7,6 @@ import registerServiceWorker from './registerServiceWorker'
 import store, { history } from './store'
 
 import './game'
-import './index.css'
 
 ReactDOM.render((
   <Provider store={store}>

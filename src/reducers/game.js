@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { contains } from '../lib/utils'
-import { level3 as level } from '../levels'
+import levels, { levelClear } from '../levels'
 import { stackMaxSize } from '../constants'
 
 const hasStar = cell => cell > 3
@@ -8,8 +8,8 @@ const pickupStar = cell => cell -= 4
 const isPlayerOutOfBounds = p => p.x < 0 || p.x > 9 || p.y < 0 || p.y > 9
 const isPlayerDead = (p, board) => isPlayerOutOfBounds(p) || !board[p.y][p.x]
 
-
-const initialState = {
+export const init = (level = levelClear) => ({
+  level,
   ...level,
   speed: 1,
   currentInstruction: undefined,
@@ -19,10 +19,20 @@ const initialState = {
   isRunning: false,
   ended: false,
   message: '',
-}
+})
+
+const initialState = init()
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+  case 'LOAD_LEVEL': {
+    return {
+      ...init(action.level),
+      speed: state.speed,
+    }
+  }
+
   case 'PLAY': {
     if (state.isRunning) return {
       ...state,
@@ -54,17 +64,16 @@ const reducer = (state = initialState, action) => {
 
   case 'RESTART': {
     return {
-      ...initialState,
-      speed: state.speed,
+      ...init(state.level),
       functions: state.functions,
-      selectedCell: undefined,
+      speed: state.speed,
     }
   }
-  // TODO: rm dependency 'initialState'
+
   case 'CLEAR': return {
     ...state,
     instructionsStack: [],
-    functions: level.functions,
+    functions: state.level.functions,
     selectedCell: undefined,
   }
 
