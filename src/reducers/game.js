@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { contains } from '../lib/utils'
-import levels, { levelClear } from '../levels'
+import { levelClear } from '../levels'
 import { stackMaxSize } from '../constants'
 
 const hasStar = cell => cell > 3
