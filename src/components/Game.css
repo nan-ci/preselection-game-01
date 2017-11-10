@@ -7,6 +7,10 @@
   flex-direction: column;
 }
 
+#PanelTop, #PanelBottom {
+  display: flex;
+}
+
 #PanelTop {
   position: relative;
   flex-direction: row;
@@ -16,10 +20,6 @@
   flex-grow: 1;
   flex-direction: column;
   justify-content: flex-end;
-}
-
-#PanelTop, #PanelBottom {
-  display: flex;
 }
 
 #PanelTop.blur, #PanelBottom.blur {

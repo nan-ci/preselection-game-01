@@ -7,10 +7,6 @@
   flex-direction: column;
 }
 
-#FullScreenAlertBoxWrapper.hidden {
-  display: none !important;
-}
-
 #FullScreenAlertBox {
   flex: 1 1;
   position: relative;

@@ -35,3 +35,8 @@ html, body, #root, #App, #Game {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-tap-highlight-color: transparent;
 }
+
+
+.hidden {
+  display: none !important;
+}

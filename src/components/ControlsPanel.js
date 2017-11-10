@@ -11,9 +11,9 @@ const ControlsPanel = () => {
   return (
     <div className='ControlsPanel'>
       <Block type={game.paused ? 'play' : 'pause'} onClick={() => store.dispatch(game.paused ? play() : pause())} />
-      <Block type="step" onClick={() => !game.ended && store.dispatch(step())} />
-      <Block type="restart" onClick={() => store.dispatch(restart())} />
-      <Block type="clear" onClick={() => store.dispatch(clear())} />
+      <Block type='step' onClick={() => !game.ended && store.dispatch(step())} />
+      <Block type='restart' onClick={() => store.dispatch(restart())} />
+      <Block type='clear' onClick={() => store.dispatch(clear())} />
       <Block type={`X${game.speed}`} onClick={() => store.dispatch(changeSpeed())} />
     </div>
   )

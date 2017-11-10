@@ -42,13 +42,13 @@ class Game extends React.Component {
     const showAlert = game.ended && !game.stars
 
     return (
-      <div id="Game">
-        <div id="PanelTop" className={showAlert?'blur':''}>
+      <div id='Game'>
+        <div id='PanelTop' className={showAlert?'blur':''}>
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />
           <ControlsPanel />
         </div>
-        <div id="PanelBottom" className={showAlert?'blur':''}>
+        <div id='PanelBottom' className={showAlert?'blur':''}>
           <InstructionsPanel {...game} />
           <FunctionsPanel {...game} />
         </div>
