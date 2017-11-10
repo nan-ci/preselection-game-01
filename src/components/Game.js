@@ -44,6 +44,7 @@ class Game extends React.Component {
     return (
       <div id='Game'>
         <div id='PanelTop' className={showAlert?'blur':''}>
+          <div id='Message' className={game.message ?'':'hidden'}>{game.message}</div>
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />
           <ControlsPanel />

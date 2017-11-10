@@ -193,7 +193,7 @@ const reducer = (state = initialState, action) => {
       player: p,
       stars,
       ended: !stars || playerIsDead,
-      message: !stars ? 'WIN' : playerIsDead ? 'DEAD' : ''
+      message: !stars ? 'YOU WON!' : playerIsDead ? 'YOU DIED!' : ''
     }
   }
 
@@ -268,7 +268,7 @@ const reducer = (state = initialState, action) => {
       ...state,
       instructionsStack: stack,
       ended: stack.length > stackMaxSize,
-      message: stack.length > stackMaxSize ? 'MAX CALL STACK' : ''
+      message: stack.length > stackMaxSize ? 'MAXIMUM CALL STACK REACHED' : ''
     }
   }
 
