@@ -2,9 +2,9 @@ const isMobile = (function(a,b){return /(android|bb\d+|meego).+mobile|avantgo|ba
 
 const getType = instruction => {
   switch (instruction.type) {
-  case 'MOVE_FORWARD': return 'forward'
-  case 'ROTATE_LEFT': return 'left'
-  case 'ROTATE_RIGHT': return 'right'
+  case 'MOVE_FORWARD': return 'FW'
+  case 'ROTATE_LEFT': return 'TL'
+  case 'ROTATE_RIGHT': return 'TR'
   case 'PAINT_WITH_COLOR': return `P${instruction.color}`
   case 'REPEAT_FUNCTION': return `F${instruction.id}`
   default: return 'blank'

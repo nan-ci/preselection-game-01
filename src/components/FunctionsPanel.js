@@ -7,7 +7,7 @@ import Block from './Block'
 import { selectFunctionInstruction } from '../actions/game'
 
 
-const FunctionBlock = ({ func: f, selectedCell: selected }) => {
+const FunctionBlock = ({ id, func: f, selectedCell: selected }) => {
   f.instructions = [
     ...f.instructions,
     ...Array(f.length - f.instructions.length)
@@ -19,10 +19,10 @@ const FunctionBlock = ({ func: f, selectedCell: selected }) => {
     <Block
       key={index}
       color={instruction.condition}
-      className={selected && index === selected.instructionId && selected.functionId === f.id ? 'selected' : ''}
+      className={selected && index === selected.instructionId && selected.functionId === id ? 'selected' : ''}
       type={getType(instruction)}
       onClick={() => store.dispatch(selectFunctionInstruction({
-        functionId: f.id,
+        functionId: id,
         instructionId: index,
       }))}
     />
@@ -30,7 +30,7 @@ const FunctionBlock = ({ func: f, selectedCell: selected }) => {
 
   return (
     <div className='FunctionBlock'>
-      <Block className='FunctionIdBlock' type={`F${f.id}label`} color='4' />
+      <Block className='FunctionIdBlock' type={`F${id}label`} color='4' />
       {instructionBlocks}
     </div>
   )
@@ -38,7 +38,7 @@ const FunctionBlock = ({ func: f, selectedCell: selected }) => {
 
 const FunctionsPanel = ({ selectedCell, activeInstructions, functions }) => {
   const functionsBlocks = functions.map((f, index) =>
-    <FunctionBlock key={index} func={f} selectedCell={selectedCell} />)
+    <FunctionBlock key={index} id={index} func={f} selectedCell={selectedCell} />)
 
   return (
     <div className='FunctionsPanel'>

@@ -3,9 +3,9 @@ const maxDelayBetweenInstructions = 800
 const stackMaxSize = 100
 
 const allInstructions = {
-  forward: { type: 'MOVE_FORWARD' },
-  left: { type: 'ROTATE_LEFT' },
-  right: { type: 'ROTATE_RIGHT' },
+  FW: { type: 'MOVE_FORWARD' },
+  TL: { type: 'ROTATE_LEFT' },
+  TR: { type: 'ROTATE_RIGHT' },
   C1: { condition: 1 },
   C2: { condition: 2 },
   C3: { condition: 3 },

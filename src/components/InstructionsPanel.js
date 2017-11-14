@@ -5,21 +5,7 @@ import Block from './Block'
 import store from '../store'
 import { contains } from '../lib/utils'
 import { setFunctionInstruction } from '../actions/game'
-
-const INSTRUCTIONS = {
-  forward: { type: 'MOVE_FORWARD' },
-  left: { type: 'ROTATE_LEFT' },
-  right: { type: 'ROTATE_RIGHT' },
-  C1: { condition: 1 },
-  C2: { condition: 2 },
-  C3: { condition: 3 },
-  P1: { type: 'PAINT_WITH_COLOR', color: 1 },
-  P2: { type: 'PAINT_WITH_COLOR', color: 2 },
-  P3: { type: 'PAINT_WITH_COLOR', color: 3 },
-  F0: { type: 'REPEAT_FUNCTION', id: 0 },
-  F1: { type: 'REPEAT_FUNCTION', id: 1 },
-  F2: { type: 'REPEAT_FUNCTION', id: 2 },
-}
+import { allInstructions } from '../constants'
 
 const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
 
@@ -32,7 +18,7 @@ const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
   const selectedInstruction = functions[functionId].instructions[instructionId]
 
   const instructionsButtons = activeInstructions.map(key => {
-    const instruction = INSTRUCTIONS[key]
+    const instruction = allInstructions[key]
     const onClick = () => store.dispatch(setFunctionInstruction({
       functionId,
       instructionId,

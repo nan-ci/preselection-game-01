@@ -88,3 +88,85 @@ export const pause = () => ({ type: 'PAUSE' })
 export const restart = () => ({ type: 'RESTART' })
 export const clear = () => ({ type: 'CLEAR' })
 export const changeSpeed = () => ({ type: 'CHANGE_SPEED' })
+
+
+export const loadLevel = level => ({
+  type: 'LOAD_LEVEL',
+  level
+})
+
+const config = {
+ domain: 'http://localhost:8986',
+ // domain: 'https://api.nan.ci',
+}
+
+export const startGame = () => {
+  return (dispatch, getState) => {
+    fetch(`${config.domain}/game01/start`, {
+      credentials: 'include',
+    })
+    .then(res => res.json())
+    .then(level => dispatch(loadLevel(level)))
+    .catch(console.log)
+  }
+}
+
+const NO = 0
+const FW = 1
+const TL = 2
+const TR = 3
+const P1 = 4
+const P2 = 5
+const P3 = 6
+const F0 = 7
+const F1 = 8
+const F2 = 9
+const C1 = 100
+const C2 = 200
+const C3 = 300
+
+const allInstructions = { NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3 }
+
+const answerFromFunctions = functions => {
+  const answer = functions.map(f =>
+    f.instructions.map(instruction => {
+      let value = NO
+
+      switch (instruction.type) {
+        case 'MOVE_FORWARD': value = FW; break
+        case 'ROTATE_LEFT': value = TL; break
+        case 'ROTATE_RIGHT': value = TR; break
+        case 'PAINT_WITH_COLOR': value = 3 + instruction.color; break
+        case 'REPEAT_FUNCTION': value = 7 + instruction.id; break
+        default: value = NO; break
+      }
+
+      if (instruction.condition) {
+        value += instruction.condition * 100
+      }
+
+      return value
+    }))
+
+  return answer
+}
+
+export const submitAnswer = () => {
+  return (dispatch, getState) => {
+    const { functions } = getState().game
+    const answer = answerFromFunctions(functions)
+
+    fetch(`${config.domain}/game01/next`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ answer }),
+    })
+    .then(res => res.json())
+    .then(level => dispatch(loadLevel(level)))
+    .catch(console.log)
+  }
+}
