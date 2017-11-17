@@ -2,23 +2,39 @@ const maxDelayBetweenInstructions = 800
 
 const stackMaxSize = 100
 
-const allInstructions = {
-  FW: { type: 'MOVE_FORWARD' },
-  TL: { type: 'ROTATE_LEFT' },
-  TR: { type: 'ROTATE_RIGHT' },
-  C1: { condition: 1 },
-  C2: { condition: 2 },
-  C3: { condition: 3 },
-  P1: { type: 'PAINT_WITH_COLOR', color: 1 },
-  P2: { type: 'PAINT_WITH_COLOR', color: 2 },
-  P3: { type: 'PAINT_WITH_COLOR', color: 3 },
-  F0: { type: 'REPEAT_FUNCTION', id: 0 },
-  F1: { type: 'REPEAT_FUNCTION', id: 1 },
-  F2: { type: 'REPEAT_FUNCTION', id: 2 },
-}
+const NO = 0
+const FW = 1
+const TL = 2
+const TR = 3
+const P1 = 4
+const P2 = 5
+const P3 = 6
+const F0 = 7
+const F1 = 8
+const F2 = 9
+const C1 = 100
+const C2 = 200
+const C3 = 300
+
+let allInstructions = { NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3 }
+allInstructions = Object.entries(allInstructions)
+  .reduce((o, [k, v]) => ({ ...o, [v]: k }), allInstructions)
 
 export {
   maxDelayBetweenInstructions,
   stackMaxSize,
+  NO,
+  FW,
+  TL,
+  TR,
+  P1,
+  P2,
+  P3,
+  F0,
+  F1,
+  F2,
+  C1,
+  C2,
+  C3,
   allInstructions,
 }

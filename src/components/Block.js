@@ -45,9 +45,9 @@ const typeImage = objMap(d => ({
   X4: speed(1),
   X8: speed(0),
 })
-typeImage.blank = {}
+typeImage.NO = {}
 
-const Block = ({ type = 'blank', color = 0, onClick, className = '', ...props } = {}) => (
+const Block = ({ type = 'NO', color = 0, onClick, className = '', ...props } = {}) => (
   <div
     className={`block ${type} color-${color} ${className} ${onClick ? 'interactive' : ''}`}
     onClick={onClick}

@@ -13,6 +13,6 @@ export default {
   ],
   player: { x: -1, y: -1, direction: 0 },
   stars: 0,
-  functions: [{instructions: [], length: 1}],
-  activeInstructions: [ 'left', 'forward', 'right', 'C1', 'C2', 'C3', 'F0' ],
+  functions: [],
+  activeInstructions: [],
 }

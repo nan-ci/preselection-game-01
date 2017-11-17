@@ -1,16 +1,22 @@
 import cloneDeep from 'lodash/cloneDeep'
-import { contains } from '../lib/utils'
 import { levelClear } from '../levels'
-import { stackMaxSize } from '../constants'
+import {
+  stackMaxSize,
+  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2,
+} from '../constants'
 
 const hasStar = cell => cell > 3
 const pickupStar = cell => cell - 4
 const isPlayerOutOfBounds = p => p.x < 0 || p.x > 9 || p.y < 0 || p.y > 9
 const isPlayerDead = (p, board) => isPlayerOutOfBounds(p) || !board[p.y][p.x]
 
+const initFunctions = functions => functions.map(f =>
+  ({ ...f, instructions: Array(f.length).fill(NO) }))
+
 export const init = (level = levelClear) => ({
   level,
-  ...level,
+  ...cloneDeep(level),
+  functions: initFunctions(level.functions),
   speed: 1,
   currentInstruction: undefined,
   instructionsStack: [],
@@ -34,13 +40,16 @@ const reducer = (state = initialState, action) => {
   }
 
   case 'PLAY': {
-    if (state.isRunning) return {
-      ...state,
-      paused: false,
-      selectedCell: undefined,
+    if (state.isRunning) {
+      return {
+        ...state,
+        paused: false,
+        selectedCell: undefined,
+      }
     }
 
     const f0 = state.functions[0]
+    if (!f0) return state
 
     return {
       ...state,
@@ -70,11 +79,12 @@ const reducer = (state = initialState, action) => {
     }
   }
 
-  case 'CLEAR': return {
-    ...state,
-    instructionsStack: [],
-    functions: state.level.functions,
-    selectedCell: undefined,
+  case 'CLEAR': {
+    return {
+      ...state,
+      functions: initFunctions(state.functions),
+      selectedCell: undefined,
+    }
   }
 
   case 'CHANGE_SPEED': {
@@ -90,177 +100,80 @@ const reducer = (state = initialState, action) => {
   case 'NEXT_INSTRUCTION': {
     const currentInstruction = state.instructionsStack.slice(0, 1)[0]
 
-    return {
+    const newState = {
       ...state,
       currentInstruction,
-      instructionsStack: [
-        ...state.instructionsStack.slice(1)
-      ],
-      ended: !currentInstruction,
-      message: !currentInstruction ? 'EMPTY STACK' : '',
+      instructionsStack: state.instructionsStack.slice(1),
       selectedCell: undefined,
     }
+
+    if (currentInstruction === undefined) {
+      return {
+        ...newState,
+        ended: true,
+        message: 'EMPTY STACK',
+      }
+    }
+
+    const instruction = currentInstruction % 100
+    const condition = Math.floor(currentInstruction / 100)
+
+    const p = state.player
+    const currentCell = state.board[p.y][p.x]
+    const currentCellColor = currentCell % 4
+
+    if (condition && condition !== currentCellColor) {
+      return newState
+    }
+
+    return applyInstruction(newState, instruction)
   }
 
   case 'SELECT_FUNCTION_INSTRUCTION': {
-    const functions = cloneDeep(state.functions)
-    const selected = state.selectedCell
     const { functionId, instructionId } = action
-    const instruction = functions[functionId].instructions[instructionId]
+    const selected = state.selectedCell
 
     if (selected
       && selected.functionId === functionId
       && selected.instructionId === instructionId) {
-      return { ...state, functions, selectedCell: undefined }
+      return { ...state, selectedCell: undefined }
     }
 
     return {
       ...state,
-      functions,
       selectedCell: {
         functionId,
         instructionId,
-        instruction,
       },
     }
   }
 
-  case 'DESELECT_FUNCTION_INSTRUCTION': return { ...state, selectedCell: undefined }
-  case 'SET_FUNCTION_INSTRUCTION': {
-    const functions = cloneDeep(state.functions)
-    const { functionId, instructionId, instruction } = action
-    const instructions = functions[functionId].instructions
-    if (instruction.condition === undefined) {
-      if (contains(instruction, instructions[instructionId])) {
-        instructions[instructionId] = {
-          condition: instructions[instructionId].condition,
-        }
-      } else {
-        instructions[instructionId] = {
-          condition: instructions[instructionId].condition,
-          ...instruction,
-        }
-      }
-    } else if (instructions[instructionId].condition === instruction.condition) {
-      instructions[instructionId].condition = undefined
-    } else {
-      instructions[instructionId] = {
-        ...instructions[instructionId],
-        condition: instruction.condition,
-      }
+  case 'DESELECT_FUNCTION_INSTRUCTION': {
+    return {
+      ...state,
+      selectedCell: undefined
     }
+  }
+
+  case 'SET_FUNCTION_INSTRUCTION': {
+    const { functionId, instructionId, instruction } = action
+    const functions = cloneDeep(state.functions)
+    const prev = functions[functionId].instructions[instructionId]
+
+    const prevCondition = Math.floor(prev / 100) * 100
+    const prevType = prev % 100
+
+    const nextCondition = Math.floor(instruction / 100) * 100
+    const nextType = instruction % 100
+
+    const condition = nextCondition ? (prevCondition === nextCondition ? 0 : nextCondition) : prevCondition
+    const type = nextType ? (prevType === nextType ? 0 : nextType) : prevType
+
+    functions[functionId].instructions[instructionId] = type + condition
+
     return { ...state, functions }
   }
 
-  case 'MOVE_FORWARD': {
-    let p = state.player
-    let board = state.board
-    let stars = state.stars
-
-    // check color condition
-    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
-      return state
-    }
-
-    // move
-    p = { ...state.player }
-    if (p.direction === 0) { p.x -= 1 }
-    if (p.direction === 1) { p.y -= 1 }
-    if (p.direction === 2) { p.x += 1 }
-    if (p.direction === 3) { p.y += 1 }
-
-    // check for star
-    const playerIsDead = isPlayerDead(p, state.board)
-    if (!playerIsDead && hasStar(state.board[p.y][p.x])) {
-      board = cloneDeep(state.board)
-      board[p.y][p.x] = pickupStar(board[p.y][p.x])
-      stars -= 1
-    }
-
-    return {
-      ...state,
-      board,
-      player: p,
-      stars,
-      ended: !stars || playerIsDead,
-      message: !stars ? 'YOU WON!' : playerIsDead ? 'YOU DIED!' : ''
-    }
-  }
-
-  case 'ROTATE_LEFT': {
-    // check color condition
-    let p = state.player
-    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
-      return state
-    }
-
-    p = {
-      ...state.player,
-      direction: (p.direction + 3) % 4
-    }
-
-    return {
-      ...state,
-      player: p
-    }
-  }
-
-  case 'ROTATE_RIGHT': {
-    // check color condition
-    let p = state.player
-    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
-      return state
-    }
-
-    p = {
-      ...state.player,
-      direction: (p.direction + 1) % 4
-    }
-
-    return {
-      ...state,
-      player: p
-    }
-  }
-
-  case 'PAINT_WITH_COLOR': {
-    // check color condition
-    const p = state.player
-    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
-      return state
-    }
-
-    const color = action.color
-    const board = cloneDeep(state.board)
-
-    board[p.y][p.x] = hasStar(board[p.y][p.x]) ? 3 + color : color
-
-    return {
-      ...state,
-      board
-    }
-  }
-
-  case 'REPEAT_FUNCTION': {
-    // check color condition
-    const p = state.player
-    if (action.condition && state.board[p.y][p.x] % 4 !== action.condition) {
-      return state
-    }
-    const instructions = state.functions[action.id].instructions
-
-    const stack = [
-      ...instructions,
-      ...state.instructionsStack
-    ]
-
-    return {
-      ...state,
-      instructionsStack: stack,
-      ended: stack.length > stackMaxSize,
-      message: stack.length > stackMaxSize ? 'MAXIMUM CALL STACK REACHED' : ''
-    }
-  }
 
   default:
     return state
@@ -269,3 +182,100 @@ const reducer = (state = initialState, action) => {
 }
 
 export default reducer
+
+
+/* Helpers */
+
+const paint = (state, color) => {
+  const board = cloneDeep(state.board)
+  const p = state.player
+  const currentColor = board[p.y][p.x] % 4
+  board[p.y][p.x] = board[p.y][p.x] - currentColor + color
+
+  return {
+    ...state,
+    board
+  }
+}
+
+const repeatFunction = (state, id) => {
+  const instructions = state.functions[id].instructions
+
+  const stack = [
+    ...instructions,
+    ...state.instructionsStack
+  ]
+
+  return {
+    ...state,
+    instructionsStack: stack,
+    ended: stack.length > stackMaxSize,
+    message: stack.length > stackMaxSize ? 'MAXIMUM CALL STACK REACHED' : ''
+  }
+}
+
+// should not mutate state
+const applyInstruction = (state, instruction) => {
+  switch (instruction) {
+    case NO: return state
+
+    case FW: {
+      let board = state.board
+      let stars = state.stars
+
+      // move
+      const p = { ...state.player }
+      if (p.direction === 0) { p.x -= 1 }
+      if (p.direction === 1) { p.y -= 1 }
+      if (p.direction === 2) { p.x += 1 }
+      if (p.direction === 3) { p.y += 1 }
+
+      // check for star
+      const playerIsDead = isPlayerDead(p, board)
+      if (!playerIsDead && hasStar(board[p.y][p.x])) {
+        board = cloneDeep(board)
+        board[p.y][p.x] = pickupStar(board[p.y][p.x])
+        stars -= 1
+      }
+
+      return {
+        ...state,
+        board,
+        player: p,
+        stars,
+        ended: !stars || playerIsDead,
+        message: !stars ? 'YOU WON!' : playerIsDead ? 'YOU DIED!' : ''
+      }
+    }
+
+    case TL: {
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          direction: (state.player.direction + 3) % 4
+        }
+      }
+    }
+
+    case TR: {
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          direction: (state.player.direction + 1) % 4
+        }
+      }
+    }
+
+    case P1: return paint(state, 1)
+    case P2: return paint(state, 2)
+    case P3: return paint(state, 3)
+
+    case F0: return repeatFunction(state, 0)
+    case F1: return repeatFunction(state, 1)
+    case F2: return repeatFunction(state, 2)
+
+    default: return state
+  }
+}
