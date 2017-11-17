@@ -25,6 +25,7 @@ export const init = (level = levelClear) => ({
   isRunning: false,
   ended: false,
   message: '',
+  error: '',
 })
 
 const initialState = init()
@@ -174,6 +175,12 @@ const reducer = (state = initialState, action) => {
     return { ...state, functions }
   }
 
+  case 'SET_ERROR': {
+    return {
+      ...state,
+      error: action.error
+    }
+  }
 
   default:
     return state

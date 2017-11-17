@@ -4,5 +4,6 @@
 create `.env` (or `.env.local`) file at the root of the project
 
 ```
-REACT_APP_API_HOST='..'
+REACT_APP_SITE_HOST
+REACT_APP_API_HOST
 ```

@@ -56,6 +56,34 @@ export const loadLevel = level => ({
   level
 })
 
+export const setError = error => ({
+  type: 'SET_ERROR',
+  error,
+})
+
+
+const handleResponse = response => {
+  const contentType = response.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    throw Error('ops, something went wrong: expected JSON response')
+  }
+
+  if (!response.ok) {
+    return response.json()
+      .then(error => { throw error })
+  }
+
+  return response.json()
+}
+
+const handleError = (error, dispatch) => dispatch(setError(error.message || error))
+
+const handleLevel = (level, dispatch) => {
+  if (!level /* || handle error cases */) throw Error('invalid level')
+
+  return dispatch(loadLevel(level))
+}
+
 const domain = process.env.REACT_APP_API_HOST
 
 export const startGame = () => {
@@ -63,16 +91,18 @@ export const startGame = () => {
     fetch(`${domain}/game01/start`, {
       credentials: 'include',
     })
-    .then(res => res.json())
-    .then(level => dispatch(loadLevel(level)))
-    .catch(console.log) // TODO: handle redirect if not authorized
+    .then(res => handleResponse(res))
+    .then(level => handleLevel(level, dispatch))
+    .catch(error => handleError(error, dispatch))
   }
 }
+
+const formatAnswer = functions => functions.map(f => f.instructions)
 
 export const submitAnswer = () => {
   return (dispatch, getState) => {
     const { functions } = getState().game
-    const answer = functions.map(f => f.instructions)
+    const answer = formatAnswer(functions)
 
     fetch(`${domain}/game01/next`, {
       method: 'POST',
@@ -83,8 +113,8 @@ export const submitAnswer = () => {
       credentials: 'include',
       body: JSON.stringify({ answer }),
     })
-    .then(res => res.json())
-    .then(level => dispatch(loadLevel(level)))
-    .catch(console.log) // TODO: handle redirect if not authorized
+    .then(res => handleResponse(res))
+    .then(level => handleLevel(level, dispatch))
+    .catch(error => handleError(error, dispatch))
   }
 }

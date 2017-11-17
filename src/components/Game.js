@@ -12,11 +12,15 @@ import {
 
 import store from '../store'
 
-import { startGame, submitAnswer } from '../actions/game'
+import { startGame, submitAnswer, restart } from '../actions/game'
 
-const alertBoxButtons = [
-  { text: 'RESTART', onClick: () => store.dispatch({type: 'RESTART'}) },
+const winButtons = [
+  { text: 'RESTART', onClick: () => store.dispatch(restart()) },
   { text: 'NEXT', onClick: () => store.dispatch(submitAnswer()) },
+]
+
+const errorButtons = [
+  { text: 'BACK TO SITE', onClick: () => window.location = 'https://nan.ci' },
 ]
 
 /* disable scrolling */
@@ -38,7 +42,9 @@ class Game extends React.Component {
 
   render() {
     const { game } = store.getState()
-    const showAlert = game.ended && !game.stars
+    const showAlert = game.error || (game.ended && !game.stars)
+    const message = game.error || game.message
+    const buttons = game.error ? errorButtons : winButtons
 
     return (
       <div id='Game'>
@@ -52,7 +58,7 @@ class Game extends React.Component {
           <InstructionsPanel {...game} />
           <FunctionsPanel {...game} />
         </div>
-        <FullScreenAlertBox show={showAlert} message={game.message} buttons={alertBoxButtons} />
+        <FullScreenAlertBox show={showAlert} message={message} buttons={buttons} />
       </div>
     )
   }
