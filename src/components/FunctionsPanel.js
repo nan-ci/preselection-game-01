@@ -1,32 +1,28 @@
 import React from 'react'
 import './FunctionsPanel.css'
-
 import store from '../store'
-import { getType } from '../lib/utils'
 import Block from './Block'
 import { selectFunctionInstruction } from '../actions/game'
+import { allInstructions } from '../constants'
 
+const FunctionBlock = ({ id, func, selectedCell: selected }) => {
+  const instructionBlocks = func.instructions.map((instruction, index) => {
+    const condition = Math.floor(instruction / 100)
+    const type = allInstructions[instruction % 100]
 
-const FunctionBlock = ({ id, func: f, selectedCell: selected }) => {
-  f.instructions = [
-    ...f.instructions,
-    ...Array(f.length - f.instructions.length)
-      .fill()
-      .map(e => e = Object.create(null))
-  ]
-
-  const instructionBlocks = f.instructions.map((instruction, index) => (
-    <Block
-      key={index}
-      color={instruction.condition}
-      className={selected && index === selected.instructionId && selected.functionId === id ? 'selected' : ''}
-      type={getType(instruction)}
-      onClick={() => store.dispatch(selectFunctionInstruction({
-        functionId: id,
-        instructionId: index,
-      }))}
-    />
-  ))
+    return (
+      <Block
+        key={index}
+        color={condition}
+        className={selected && index === selected.instructionId && selected.functionId === id ? 'selected' : ''}
+        type={type}
+        onClick={() => store.dispatch(selectFunctionInstruction({
+          functionId: id,
+          instructionId: index,
+        }))}
+      />
+    )
+  })
 
   return (
     <div className='FunctionBlock'>
@@ -36,7 +32,7 @@ const FunctionBlock = ({ id, func: f, selectedCell: selected }) => {
   )
 }
 
-const FunctionsPanel = ({ selectedCell, activeInstructions, functions }) => {
+const FunctionsPanel = ({ selectedCell, functions }) => {
   const functionsBlocks = functions.map((f, index) =>
     <FunctionBlock key={index} id={index} func={f} selectedCell={selectedCell} />)
 

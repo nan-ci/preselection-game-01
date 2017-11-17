@@ -1,20 +1,23 @@
 import React from 'react'
-import { getType } from '../lib/utils'
 import Block from './Block'
 import './StackPanel.css'
+import { allInstructions } from '../constants'
 
-const StackInstructionBlock = (instruction, key) => <Block
-  key={key}
-  color={instruction.condition}
-  type={getType(instruction)}
-/>
+const StackPanel = ({ instructions }) => {
+  const instructionBlocks = instructions.map((instruction, index) => {
+    const type = allInstructions[instruction % 100]
+    const color = Math.floor(instruction / 100)
 
-const StackPanel = ({ instructions }) => (
-  <div className='StackPanel'>
-    <div className='ScrollWrapper'>
-      {instructions.map(StackInstructionBlock)}
+    return <Block key={index} type={type} color={color}/>
+  })
+
+  return (
+    <div className='StackPanel'>
+      <div className='ScrollWrapper'>
+        {instructionBlocks}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default StackPanel

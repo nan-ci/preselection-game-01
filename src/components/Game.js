@@ -14,9 +14,6 @@ import store from '../store'
 
 import { startGame, submitAnswer } from '../actions/game'
 
-import levels from '../levels'
-let levelId = 0
-
 const alertBoxButtons = [
   { text: 'RESTART', onClick: () => store.dispatch({type: 'RESTART'}) },
   { text: 'NEXT', onClick: () => store.dispatch(submitAnswer()) },
