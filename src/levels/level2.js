@@ -14,24 +14,9 @@ export default {
   player: { x: 3, y: 4, direction: 2 },
   stars: 2,
   functions: [
-    {
-      id: 0,
-      instructions: [],
-      length: 6
-    },
+    { instructions: [], length: 6 },
   ],
   activeInstructions: [
-    'left',
-    'forward',
-    'right',
-    'C1',
-    'C2',
-    'C3',
-    'P1',
-    'P2',
-    'P3',
-    'F0',
-    'F1',
-    'F2',
+    'FW', 'TL', 'TR', 'C1', 'C2', 'C3', 'P1', 'P2', 'P3', 'F0', 'F1', 'F2'
   ],
 }

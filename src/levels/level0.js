@@ -14,15 +14,7 @@ export default {
   player: { x: 2, y: 4, direction: 2 },
   stars: 1,
   functions: [
-    {
-      id: 0,
-      instructions: [],
-      correctInstructions: [
-        { type: 'MOVE_FORWARD' },
-        { type: 'REPEAT_FUNCTION', id: 0 },
-      ],
-      length: 2
-    }
+    { instructions: [], length: 2 }
   ],
-  activeInstructions: [ 'forward', 'F0' ],
+  activeInstructions: [ 'FW', 'F0' ],
 }
