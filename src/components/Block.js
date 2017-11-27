@@ -10,14 +10,14 @@ const speed = n => [
   '<path fill="#FF7" d="M45.79 20.526l-1.755 4.386L30 20l-14.035 4.912-1.754-4.386L30 15l15.79 5.526z"',
   '<path fill="#FF7" d="M43.333 26.667l-1.754 4.386L30 27l-11.58 4.053-1.753-4.386L30 22l13.333 4.667z"',
   '<path fill="#FF7" d="M40.877 32.807l-1.754 4.386L30 34l-9.123 3.193-1.754-4.386L30 29l10.877 3.807z"',
-  '<path fill="#FF7" d="M38.42 38.947l-1.753 4.386L30 41l-6.667 2.333-1.754-4.386L30 36l8.42 2.947z"',
+  '<path fill="#FF7" d="M38.42 38.947l-1.753 4.386L30 41l-6.667 2.333-1.754-4.386L30 36l8.42 2.947z"'
 ].map((base, i) => base + (i < n ? ' fill-opacity=".2" />' : ' />'))
  .join('')
 
 const typeImage = objMap(d => ({
-    backgroundImage: `url('data:image/svg+xml;utf8,`
-      +`<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">${d}</svg>')`
-  }), {
+  backgroundImage: `url('data:image/svg+xml;utf8,` +
+      `<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">${d}</svg>')`
+}), {
   FW: '<path d="M30 15l20 20-10 10-10-10-10 10-10-10" />',
   TL: '<path d="M15 30l20-20 10 10-10 10 10 10-10 10" />',
   TR: '<path d="M45 30L25 50 15 40l10-10-10-10 10-10" />',
@@ -43,7 +43,7 @@ const typeImage = objMap(d => ({
   X1: speed(3),
   X2: speed(2),
   X4: speed(1),
-  X8: speed(0),
+  X8: speed(0)
 })
 typeImage.NO = {}
 
@@ -52,8 +52,7 @@ const Block = ({ type = 'NO', color = 0, onClick, className = '', ...props } = {
     className={`block ${type} color-${color} ${className} ${onClick ? 'interactive' : ''}`}
     onClick={onClick}
     style={typeImage[type]}
-    {...props}>
-  </div>
+    {...props} />
 )
 
 export default Block

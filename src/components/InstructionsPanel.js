@@ -7,7 +7,6 @@ import { setFunctionInstruction } from '../actions/game'
 import { allInstructions } from '../constants'
 
 const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
-
   if (!selectedCell) return null
   const { functionId, instructionId } = selectedCell
 
@@ -16,7 +15,7 @@ const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
     const onClick = () => store.dispatch(setFunctionInstruction({
       functionId,
       instructionId,
-      instruction,
+      instruction
     }))
 
     const { functions } = store.getState().game
@@ -28,7 +27,7 @@ const InstructionsPanel = ({ selectedCell, activeInstructions }) => {
 
     const color = Math.floor(instruction / 100)
 
-    return <Block className={selected} key={key} onClick={onClick} color={color} type={key}/>
+    return <Block className={selected} key={key} onClick={onClick} color={color} type={key} />
   })
 
   return (

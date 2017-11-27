@@ -3,20 +3,20 @@ import deepFreeze from 'deep-freeze'
 import game, { init } from './game'
 import { clear } from '../actions/game'
 import {
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2,
+  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2
 } from '../constants'
 
 const level = {
   board: [
     [1, 5],
-    [0, 0],
+    [0, 0]
   ],
   player: { x: 0, y: 0, direction: 2 },
   stars: 1,
   functions: [
     { instructions: [], length: 2 },
-    { instructions: [], length: 3 },
-  ],
+    { instructions: [], length: 3 }
+  ]
 }
 
 it('method: init should set basic state & functions instructions to NO', () => {
@@ -34,7 +34,7 @@ it('[controls: restart] game should reset to initialState but { functions, speed
     ...initialState,
     board: [
       [1, 1],
-      [0, 0],
+      [0, 0]
     ],
     player: { x: 1, y: 0, direction: 2 },
     stars: 0,
@@ -44,7 +44,7 @@ it('[controls: restart] game should reset to initialState but { functions, speed
       { instructions: [ FW, F0 ], length: 2 }
     ],
     instructionsStack: [ FW ],
-    speed: 4,
+    speed: 4
   }
   deepFreeze(initialState)
   deepFreeze(beforeState)
@@ -53,7 +53,7 @@ it('[controls: restart] game should reset to initialState but { functions, speed
   const expected = {
     ...initialState,
     functions: beforeState.functions,
-    speed: beforeState.speed,
+    speed: beforeState.speed
   }
 
   expect(afterState).toEqual(expected)
@@ -65,7 +65,7 @@ it('[controls: clear] game should reset functions', () => {
     ...initialState,
     board: [
       [1, 1],
-      [0, 0],
+      [0, 0]
     ],
     player: { x: 1, y: 0, direction: 2 },
     stars: 0,
@@ -75,7 +75,7 @@ it('[controls: clear] game should reset functions', () => {
       { instructions: [ FW, F0 ], length: 2 }
     ],
     instructionsStack: [ FW ],
-    speed: 4,
+    speed: 4
   }
   deepFreeze(initialState)
   deepFreeze(beforeState)
@@ -85,7 +85,7 @@ it('[controls: clear] game should reset functions', () => {
     ...beforeState,
     functions: [
       { instructions: [ NO, NO ], length: 2 }
-    ],
+    ]
   }
 
   expect(afterState).toEqual(expected)

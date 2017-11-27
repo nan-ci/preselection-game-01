@@ -18,7 +18,7 @@ const FunctionBlock = ({ id, func, selectedCell: selected }) => {
         type={type}
         onClick={() => store.dispatch(selectFunctionInstruction({
           functionId: id,
-          instructionId: index,
+          instructionId: index
         }))}
       />
     )

@@ -9,10 +9,10 @@ export default {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
   player: { x: -1, y: -1, direction: 0 },
   stars: 0,
   functions: [],
-  activeInstructions: [],
+  activeInstructions: []
 }

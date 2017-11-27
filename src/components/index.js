@@ -15,5 +15,5 @@ export {
   ControlsPanel,
   FunctionsPanel,
   InstructionsPanel,
-  FullScreenAlertBox,
+  FullScreenAlertBox
 }

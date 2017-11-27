@@ -4,7 +4,7 @@ import store from '../store'
 import './BoardPanel.css'
 
 const getIcon = (player, x, y, b) => {
-  if (player.y === y && player.x === x) return 'player'+ player.direction
+  if (player.y === y && player.x === x) return 'player' + player.direction
   return b > 3 ? 'star' : 'blank'
 }
 

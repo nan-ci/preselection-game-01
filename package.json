@@ -25,6 +25,9 @@
     "deploy": "gh-pages -d build --remote nan"
   },
   "devDependencies": {
-    "gh-pages": "^1.0.0"
+    "eslint": "^4.12.0",
+    "eslint-plugin-react": "^7.5.1",
+    "gh-pages": "^1.0.0",
+    "standard": "*"
   }
 }

@@ -6,7 +6,7 @@ import level2 from './level2'
 const levels = [
   level0,
   level1,
-  level2,
+  level2
 ]
 
 export { levelClear }

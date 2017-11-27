@@ -58,9 +58,8 @@ export const loadLevel = level => ({
 
 export const setError = error => ({
   type: 'SET_ERROR',
-  error,
+  error
 })
-
 
 const handleResponse = response => {
   const contentType = response.headers.get('content-type')
@@ -76,7 +75,7 @@ const handleResponse = response => {
   return response.json()
 }
 
-const handleError = (error, dispatch) => dispatch(setError(error.message || error))
+const handleError = (error, dispatch) => dispatch(setError(error))
 
 const handleLevel = (level, dispatch) => {
   if (!level /* || handle error cases */) throw Error('invalid level')
@@ -89,7 +88,7 @@ const domain = process.env.REACT_APP_API_HOST
 export const startGame = () => {
   return (dispatch, getState) => {
     fetch(`${domain}/game01/start`, {
-      credentials: 'include',
+      credentials: 'include'
     })
     .then(res => handleResponse(res))
     .then(level => handleLevel(level, dispatch))
@@ -111,7 +110,7 @@ export const submitAnswer = () => {
         'Content-Type': 'application/json'
       },
       credentials: 'include',
-      body: JSON.stringify({ answer }),
+      body: JSON.stringify({ answer })
     })
     .then(res => handleResponse(res))
     .then(level => handleLevel(level, dispatch))

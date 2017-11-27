@@ -2,12 +2,12 @@ const asyncDispatchMiddleware = store => next => action => {
   let syncActivityFinished = false
   let actionQueue = []
 
-  function flushQueue() {
+  function flushQueue () {
     actionQueue.forEach(a => store.dispatch(a)) // flush queue
     actionQueue = []
   }
 
-  function asyncDispatch(asyncAction) {
+  function asyncDispatch (asyncAction) {
     actionQueue = actionQueue.concat([asyncAction])
 
     if (syncActivityFinished) {

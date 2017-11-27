@@ -8,7 +8,7 @@ const StackPanel = ({ instructions }) => {
     const type = allInstructions[instruction % 100]
     const color = Math.floor(instruction / 100)
 
-    return <Block key={index} type={type} color={color}/>
+    return <Block key={index} type={type} color={color} />
   })
 
   return (

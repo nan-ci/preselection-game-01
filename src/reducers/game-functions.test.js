@@ -3,9 +3,8 @@ import game from './game'
 import { setFunctionInstruction } from '../actions/game'
 import {
   NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions,
+  allInstructions
 } from '../constants'
-
 
 // TODO: tests
 // NO    | FW -> FW     // replace
@@ -18,7 +17,7 @@ it('function instruction can be set', () => {
   const beforeState = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL ], length: 2 },
+      { instructions: [ NO, TL ], length: 2 }
     ]
   }
   deepFreeze(beforeState)
@@ -26,13 +25,13 @@ it('function instruction can be set', () => {
     type: 'SET_FUNCTION_INSTRUCTION',
     functionId: 1,
     instructionId: 1,
-    instruction: C2,
+    instruction: C2
   }
   const afterState = game(beforeState, action)
   const expected = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL+C2 ], length: 2 },
+      { instructions: [ NO, TL + C2 ], length: 2 }
     ]
   }
 
@@ -43,7 +42,7 @@ it('function instruction can be set - through action creator', () => {
   const beforeState = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL+C1 ], length: 2 },
+      { instructions: [ NO, TL + C1 ], length: 2 }
     ]
   }
   deepFreeze(beforeState)
@@ -56,7 +55,7 @@ it('function instruction can be set - through action creator', () => {
   const expected = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL+C2 ], length: 2 },
+      { instructions: [ NO, TL + C2 ], length: 2 }
     ]
   }
 
@@ -67,7 +66,7 @@ it('function instruction can be toggled', () => {
   const beforeState = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL+C2 ], length: 2 },
+      { instructions: [ NO, TL + C2 ], length: 2 }
     ]
   }
   deepFreeze(beforeState)
@@ -81,7 +80,7 @@ it('function instruction can be toggled', () => {
   const expected = {
     functions: [
       { instructions: [ NO, NO ], length: 2 },
-      { instructions: [ NO, TL ], length: 2 },
+      { instructions: [ NO, TL ], length: 2 }
     ]
   }
 

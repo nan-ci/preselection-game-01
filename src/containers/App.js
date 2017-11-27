@@ -4,10 +4,10 @@ import { Game } from '../components'
 import './App.css'
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <div id='App'>
-        <Game/>
+        <Game />
       </div>
     )
   }

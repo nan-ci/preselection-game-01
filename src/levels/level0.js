@@ -9,12 +9,12 @@ export default {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
   player: { x: 2, y: 4, direction: 2 },
   stars: 1,
   functions: [
     { instructions: [], length: 2 }
   ],
-  activeInstructions: [ 'FW', 'F0' ],
+  activeInstructions: [ 'FW', 'F0' ]
 }

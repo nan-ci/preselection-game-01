@@ -7,7 +7,7 @@ import {
   ControlsPanel,
   FunctionsPanel,
   InstructionsPanel,
-  FullScreenAlertBox,
+  FullScreenAlertBox
 } from '../components'
 
 import store from '../store'
@@ -16,11 +16,13 @@ import { startGame, submitAnswer, restart } from '../actions/game'
 
 const winButtons = [
   { text: 'RESTART', onClick: () => store.dispatch(restart()) },
-  { text: 'NEXT', onClick: () => store.dispatch(submitAnswer()) },
+  { text: 'NEXT', onClick: () => store.dispatch(submitAnswer()) }
 ]
 
 const errorButtons = [
-  { text: 'BACK TO SITE', onClick: () => window.location = 'https://nan.ci' },
+  { text: 'BACK TO SITE', onClick: () => window.location = 'https://nan.ci' }
+]
+
 ]
 
 /* disable scrolling */
@@ -29,18 +31,17 @@ const doc = win && win.document
 doc && (doc.ontouchmove = e => e.preventDefault())
 
 class Game extends React.Component {
-
-  componentDidMount() {
+  componentDidMount () {
     this.unsubscribe = store.subscribe(() => this.forceUpdate())
 
     store.dispatch(startGame())
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.unsubscribe()
   }
 
-  render() {
+  render () {
     const { game } = store.getState()
     const showAlert = game.error || (game.ended && !game.stars)
     const message = game.error || game.message
@@ -48,13 +49,13 @@ class Game extends React.Component {
 
     return (
       <div id='Game'>
-        <div id='PanelTop' className={showAlert?'blur':''}>
-          <div id='Message' className={game.message ?'':'hidden'}>{game.message}</div>
+        <div id='PanelTop' className={showAlert ? 'blur' : ''}>
+          <div id='Message' className={game.message ? '' : 'hidden'}>{game.message}</div>
           <StackPanel instructions={game.instructionsStack} />
           <BoardPanel board={game.board} player={game.player} />
           <ControlsPanel />
         </div>
-        <div id='PanelBottom' className={showAlert?'blur':''}>
+        <div id='PanelBottom' className={showAlert ? 'blur' : ''}>
           <InstructionsPanel {...game} />
           <FunctionsPanel {...game} />
         </div>
@@ -62,7 +63,6 @@ class Game extends React.Component {
       </div>
     )
   }
-
 }
 
 export default Game

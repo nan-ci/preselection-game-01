@@ -17,7 +17,7 @@ export const update = () => {
   }
 
   if (!ended) {
-    requestAnimationFrame(update)
+    window.requestAnimationFrame(update)
   }
 }
 

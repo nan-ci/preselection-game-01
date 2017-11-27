@@ -2,17 +2,17 @@ import game from './game'
 import deepFreeze from 'deep-freeze'
 import {
   NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions,
+  allInstructions
 } from '../constants'
 
 it('instruction: FW (forward)', () => {
   const beforeState = {
     board: [
-      [1, 1],
+      [1, 1]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
-    instructionsStack: [FW],
+    instructionsStack: [FW]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -24,11 +24,11 @@ it('instruction: FW (forward)', () => {
 it('instruction: TL (turn left)', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 0 },
     currentInstruction: undefined,
-    instructionsStack: [TL],
+    instructionsStack: [TL]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -40,11 +40,11 @@ it('instruction: TL (turn left)', () => {
 it('instruction: TR (turn right)', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 3 },
     currentInstruction: undefined,
-    instructionsStack: [TR],
+    instructionsStack: [TR]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -56,17 +56,17 @@ it('instruction: TR (turn right)', () => {
 it('instruction: P{1,2,3} (paint with color)', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
-    instructionsStack: [P2],
+    instructionsStack: [P2]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
   const afterState = game(beforeState, action)
   const expected = [
-    [2, 5],
+    [2, 5]
   ]
 
   expect(afterState.board).toEqual(expected)
@@ -78,12 +78,12 @@ it('instruction: F{0,1,2} (repeat function)', () => {
   ]
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 2 },
     functions,
     currentInstruction: undefined,
-    instructionsStack: [F0],
+    instructionsStack: [F0]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -96,11 +96,11 @@ it('instruction: F{0,1,2} (repeat function)', () => {
 it('conditions', () => {
   const beforeState = {
     board: [
-      [1, 1],
+      [1, 1]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
-    instructionsStack: [TL+C2],
+    instructionsStack: [TL + C2]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }

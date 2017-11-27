@@ -5,17 +5,17 @@ import game from './game'
 import { next } from '../actions/game'
 import {
   NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions,
+  allInstructions
 } from '../constants'
 
 it('next instruction', () => {
   const beforeState = {
     board: [
-      [1, 1],
+      [1, 1]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
-    instructionsStack: [FW],
+    instructionsStack: [FW]
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -29,7 +29,7 @@ it('empty stack: no current instruction should end game', () => {
   const beforeState = {
     currentInstruction: undefined,
     instructionsStack: [],
-    ended: false,
+    ended: false
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -38,7 +38,7 @@ it('empty stack: no current instruction should end game', () => {
     currentInstruction: undefined,
     instructionsStack: [],
     message: 'EMPTY STACK',
-    ended: true,
+    ended: true
   }
 
   expect(afterState).toEqual(expected)
@@ -47,13 +47,13 @@ it('empty stack: no current instruction should end game', () => {
 it('player out of bounds should die & end game', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 0 },
     currentInstruction: undefined,
     instructionsStack: [FW],
     ended: false,
-    stars: 1,
+    stars: 1
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -64,7 +64,7 @@ it('player out of bounds should die & end game', () => {
     currentInstruction: FW,
     instructionsStack: [],
     message: 'YOU DIED!',
-    ended: true,
+    ended: true
   }
 
   expect(afterState).toEqual(expected)
@@ -73,13 +73,13 @@ it('player out of bounds should die & end game', () => {
 it('player on null cell should die & end game', () => {
   const beforeState = {
     board: [
-      [1, 0],
+      [1, 0]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
     instructionsStack: [FW],
     ended: false,
-    stars: 1,
+    stars: 1
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -90,7 +90,7 @@ it('player on null cell should die & end game', () => {
     currentInstruction: FW,
     instructionsStack: [],
     message: 'YOU DIED!',
-    ended: true,
+    ended: true
   }
 
   expect(afterState).toEqual(expected)
@@ -99,13 +99,13 @@ it('player on null cell should die & end game', () => {
 it('player picking all stars should win & end game', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
     instructionsStack: [FW],
     ended: false,
-    stars: 1,
+    stars: 1
   }
   deepFreeze(beforeState)
   const action = { type: 'NEXT_INSTRUCTION' }
@@ -113,14 +113,14 @@ it('player picking all stars should win & end game', () => {
   const expected = {
     ...beforeState,
     board: [
-      [1, 1],
+      [1, 1]
     ],
     player: { x: 1, y: 0, direction: 2 },
     currentInstruction: FW,
     instructionsStack: [],
     message: 'YOU WON!',
     ended: true,
-    stars: 0,
+    stars: 0
   }
 
   expect(afterState).toEqual(expected)
@@ -129,7 +129,7 @@ it('player picking all stars should win & end game', () => {
 it('action: next', () => {
   const beforeState = {
     board: [
-      [1, 5],
+      [1, 5]
     ],
     player: { x: 0, y: 0, direction: 2 },
     currentInstruction: undefined,
@@ -141,22 +141,21 @@ it('action: next', () => {
   const store = createStore(
     game,
     beforeState,
-    applyMiddleware(thunk),
+    applyMiddleware(thunk)
   )
   store.dispatch(next())
   const afterState = store.getState()
   const expected = {
     board: [
-      [1, 1],
+      [1, 1]
     ],
     player: { x: 1, y: 0, direction: 2 },
     currentInstruction: FW,
     instructionsStack: [],
     stars: 0,
     ended: true,
-    message: 'YOU WON!',
+    message: 'YOU WON!'
   }
 
   expect(afterState).toEqual(expected)
 })
-

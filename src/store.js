@@ -12,7 +12,7 @@ const store = createStore(
   composeEnhancers(
     applyMiddleware(
       thunk,
-      loggerMiddleware,
+      loggerMiddleware
     )
   )
 )

@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { levelClear } from '../levels'
 import {
   stackMaxSize,
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2,
+  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2
 } from '../constants'
 
 const hasStar = cell => cell > 3
@@ -25,171 +25,168 @@ export const init = (level = levelClear) => ({
   isRunning: false,
   ended: false,
   message: '',
-  error: '',
+  error: ''
 })
 
 const initialState = init()
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-
-  case 'LOAD_LEVEL': {
-    return {
-      ...init(action.level),
-      speed: state.speed,
+    case 'LOAD_LEVEL': {
+      return {
+        ...init(action.level),
+        speed: state.speed
+      }
     }
-  }
 
-  case 'PLAY': {
-    if (state.isRunning) {
+    case 'PLAY': {
+      if (state.isRunning) {
+        return {
+          ...state,
+          paused: false,
+          selectedCell: undefined
+        }
+      }
+
+      const f0 = state.functions[0]
+      if (!f0) return state
+
       return {
         ...state,
+        instructionsStack: [ ...f0.instructions ],
         paused: false,
-        selectedCell: undefined,
+        isRunning: true,
+        selectedCell: undefined
       }
     }
 
-    const f0 = state.functions[0]
-    if (!f0) return state
+    case 'PAUSE': {
+      if (state.paused) return { ...state, selectedCell: undefined }
+      return { ...state, paused: true, selectedCell: undefined }
+    }
 
-    return {
+    case 'TOGGLE_PAUSE': return {
       ...state,
-      instructionsStack: [ ...f0.instructions ],
-      paused: false,
-      isRunning: true,
-      selectedCell: undefined,
-    }
-  }
-
-  case 'PAUSE': {
-    if (state.paused) return { ...state, selectedCell: undefined }
-    return { ...state, paused: true, selectedCell: undefined }
-  }
-
-  case 'TOGGLE_PAUSE': return {
-    ...state,
-    paused: !state.paused,
-    selectedCell: undefined,
-  }
-
-  case 'RESTART': {
-    return {
-      ...init(state.level),
-      functions: state.functions,
-      speed: state.speed,
-    }
-  }
-
-  case 'CLEAR': {
-    return {
-      ...state,
-      functions: initFunctions(state.functions),
-      selectedCell: undefined,
-    }
-  }
-
-  case 'CHANGE_SPEED': {
-    const maxSpeed = 8
-
-    return {
-      ...state,
-      speed: state.speed * 2 > maxSpeed ? 1 : state.speed * 2,
-      selectedCell: undefined,
-    }
-  }
-
-  case 'NEXT_INSTRUCTION': {
-    const currentInstruction = state.instructionsStack.slice(0, 1)[0]
-
-    const newState = {
-      ...state,
-      currentInstruction,
-      instructionsStack: state.instructionsStack.slice(1),
-      selectedCell: undefined,
-    }
-
-    if (currentInstruction === undefined) {
-      return {
-        ...newState,
-        ended: true,
-        message: 'EMPTY STACK',
-      }
-    }
-
-    const instruction = currentInstruction % 100
-    const condition = Math.floor(currentInstruction / 100)
-
-    const p = state.player
-    const currentCell = state.board[p.y][p.x]
-    const currentCellColor = currentCell % 4
-
-    if (condition && condition !== currentCellColor) {
-      return newState
-    }
-
-    return applyInstruction(newState, instruction)
-  }
-
-  case 'SELECT_FUNCTION_INSTRUCTION': {
-    const { functionId, instructionId } = action
-    const selected = state.selectedCell
-
-    if (selected
-      && selected.functionId === functionId
-      && selected.instructionId === instructionId) {
-      return { ...state, selectedCell: undefined }
-    }
-
-    return {
-      ...state,
-      selectedCell: {
-        functionId,
-        instructionId,
-      },
-    }
-  }
-
-  case 'DESELECT_FUNCTION_INSTRUCTION': {
-    return {
-      ...state,
+      paused: !state.paused,
       selectedCell: undefined
     }
-  }
 
-  case 'SET_FUNCTION_INSTRUCTION': {
-    const { functionId, instructionId, instruction } = action
-    const functions = cloneDeep(state.functions)
-    const prev = functions[functionId].instructions[instructionId]
-
-    const prevCondition = Math.floor(prev / 100) * 100
-    const prevType = prev % 100
-
-    const nextCondition = Math.floor(instruction / 100) * 100
-    const nextType = instruction % 100
-
-    const condition = nextCondition ? (prevCondition === nextCondition ? 0 : nextCondition) : prevCondition
-    const type = nextType ? (prevType === nextType ? 0 : nextType) : prevType
-
-    functions[functionId].instructions[instructionId] = type + condition
-
-    return { ...state, functions }
-  }
-
-  case 'SET_ERROR': {
-    return {
-      ...state,
-      error: action.error
+    case 'RESTART': {
+      return {
+        ...init(state.level),
+        functions: state.functions,
+        speed: state.speed
+      }
     }
-  }
 
-  default:
-    return state
-  }
+    case 'CLEAR': {
+      return {
+        ...state,
+        functions: initFunctions(state.functions),
+        selectedCell: undefined
+      }
+    }
 
+    case 'CHANGE_SPEED': {
+      const maxSpeed = 8
+
+      return {
+        ...state,
+        speed: state.speed * 2 > maxSpeed ? 1 : state.speed * 2,
+        selectedCell: undefined
+      }
+    }
+
+    case 'NEXT_INSTRUCTION': {
+      const currentInstruction = state.instructionsStack.slice(0, 1)[0]
+
+      const newState = {
+        ...state,
+        currentInstruction,
+        instructionsStack: state.instructionsStack.slice(1),
+        selectedCell: undefined
+      }
+
+      if (currentInstruction === undefined) {
+        return {
+          ...newState,
+          ended: true,
+          message: 'EMPTY STACK'
+        }
+      }
+
+      const instruction = currentInstruction % 100
+      const condition = Math.floor(currentInstruction / 100)
+
+      const p = state.player
+      const currentCell = state.board[p.y][p.x]
+      const currentCellColor = currentCell % 4
+
+      if (condition && condition !== currentCellColor) {
+        return newState
+      }
+
+      return applyInstruction(newState, instruction)
+    }
+
+    case 'SELECT_FUNCTION_INSTRUCTION': {
+      const { functionId, instructionId } = action
+      const selected = state.selectedCell
+
+      if (selected &&
+      selected.functionId === functionId &&
+      selected.instructionId === instructionId) {
+        return { ...state, selectedCell: undefined }
+      }
+
+      return {
+        ...state,
+        selectedCell: {
+          functionId,
+          instructionId
+        }
+      }
+    }
+
+    case 'DESELECT_FUNCTION_INSTRUCTION': {
+      return {
+        ...state,
+        selectedCell: undefined
+      }
+    }
+
+    case 'SET_FUNCTION_INSTRUCTION': {
+      const { functionId, instructionId, instruction } = action
+      const functions = cloneDeep(state.functions)
+      const prev = functions[functionId].instructions[instructionId]
+
+      const prevCondition = Math.floor(prev / 100) * 100
+      const prevType = prev % 100
+
+      const nextCondition = Math.floor(instruction / 100) * 100
+      const nextType = instruction % 100
+
+      const condition = nextCondition ? (prevCondition === nextCondition ? 0 : nextCondition) : prevCondition
+      const type = nextType ? (prevType === nextType ? 0 : nextType) : prevType
+
+      functions[functionId].instructions[instructionId] = type + condition
+
+      return { ...state, functions }
+    }
+
+    case 'SET_ERROR': {
+      return {
+        ...state,
+        error: action.error
+      }
+    }
+
+    default:
+      return state
+  }
 }
 
 export default reducer
-
 
 /* Helpers */
 

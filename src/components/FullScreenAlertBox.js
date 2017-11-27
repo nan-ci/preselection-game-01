@@ -6,7 +6,7 @@ const FullScreenAlertBox = ({ show = false, message, buttons = [], ...props }) =
     <div key={i} className='button' onClick={b.onClick}>{b.text}</div>)
 
   return (
-    <div id='FullScreenAlertBoxWrapper' className={show?'':'hidden'} {...props} >
+    <div id='FullScreenAlertBoxWrapper' className={show ? '' : 'hidden'} {...props} >
       <div id='FullScreenAlertBox'>
         <div className='message'>{message}</div>
         <div className='buttons'>{buttonBlocks}</div>
