@@ -1,5 +1,4 @@
 import game from './game'
-import deepFreeze from 'deep-freeze'
 
 it('game can be paused', () => {
   const beforeState = { paused: false }

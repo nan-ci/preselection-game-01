@@ -84,6 +84,7 @@ const handleLevel = (level, dispatch) => {
 }
 
 const domain = process.env.REACT_APP_API_HOST
+const fetch = window.fetch
 
 export const startGame = () => {
   return (dispatch, getState) => {

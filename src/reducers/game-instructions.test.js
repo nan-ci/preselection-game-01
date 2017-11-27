@@ -1,9 +1,6 @@
 import game from './game'
 import deepFreeze from 'deep-freeze'
-import {
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions
-} from '../constants'
+import { FW, TL, TR, P2, F0, C2 } from '../constants'
 
 it('instruction: FW (forward)', () => {
   const beforeState = {

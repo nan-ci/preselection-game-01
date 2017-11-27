@@ -20,11 +20,11 @@ const winButtons = [
 ]
 
 const errorButtons = [
-  { text: 'BACK TO SITE', onClick: () => window.location = 'https://nan.ci' }
+  { text: 'BACK TO SITE', onClick: () => { window.location = 'https://nan.ci' } }
 ]
 
 const unauthButtons = [
-  { text: 'LOGIN WITH GITHUB', onClick: () => window.location = 'https://api.nan.ci/auth/github' }
+  { text: 'LOGIN WITH GITHUB', onClick: () => { window.location = 'https://api.nan.ci/auth/github' } }
 ]
 
 /* disable scrolling */

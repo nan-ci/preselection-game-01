@@ -1,10 +1,7 @@
 import deepFreeze from 'deep-freeze'
 import game from './game'
 import { setFunctionInstruction } from '../actions/game'
-import {
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions
-} from '../constants'
+import { NO, TL, C1, C2 } from '../constants'
 
 // TODO: tests
 // NO    | FW -> FW     // replace

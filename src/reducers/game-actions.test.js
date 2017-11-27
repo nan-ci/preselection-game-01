@@ -3,10 +3,7 @@ import thunk from 'redux-thunk'
 import deepFreeze from 'deep-freeze'
 import game from './game'
 import { next } from '../actions/game'
-import {
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3,
-  allInstructions
-} from '../constants'
+import { FW } from '../constants'
 
 it('next instruction', () => {
   const beforeState = {

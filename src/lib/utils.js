@@ -10,7 +10,7 @@ const contains = (a, b) => {
 }
 
 const Array2d = (w, h = w, fillWith = undefined) =>
-  Array(h).fill(fillWith).map(e => e = Array(w).fill(fillWith))
+  Array(h).fill(fillWith).map(e => { e = Array(w).fill(fillWith) })
 
 module.exports = {
   isMobile,

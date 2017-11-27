@@ -1,10 +1,7 @@
 import flatMap from 'lodash/flatMap'
 import deepFreeze from 'deep-freeze'
 import game, { init } from './game'
-import { clear } from '../actions/game'
-import {
-  NO, FW, TL, TR, P1, P2, P3, F0, F1, F2
-} from '../constants'
+import { NO, FW, F0 } from '../constants'
 
 const level = {
   board: [

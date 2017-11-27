@@ -20,6 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "lint": "standard",
+    "lint-fix": "standard --fix",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build --remote nan"
@@ -27,7 +29,19 @@
   "devDependencies": {
     "eslint": "^4.12.0",
     "eslint-plugin-react": "^7.5.1",
+    "babel-eslint": "^8.0.2",
     "gh-pages": "^1.0.0",
-    "standard": "*"
+    "standard": "^10.0.3"
+  },
+  "standard": {
+    "env": [
+      "jest",
+      "es6",
+      "browser"
+    ],
+    "parser": "babel-eslint",
+    "ignore": [
+      "build/*"
+    ]
   }
 }
