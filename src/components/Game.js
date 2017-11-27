@@ -23,6 +23,8 @@ const errorButtons = [
   { text: 'BACK TO SITE', onClick: () => window.location = 'https://nan.ci' }
 ]
 
+const unauthButtons = [
+  { text: 'LOGIN WITH GITHUB', onClick: () => window.location = 'https://api.nan.ci/auth/github' }
 ]
 
 /* disable scrolling */
@@ -43,9 +45,12 @@ class Game extends React.Component {
 
   render () {
     const { game } = store.getState()
-    const showAlert = game.error || (game.ended && !game.stars)
-    const message = game.error || game.message
-    const buttons = game.error ? errorButtons : winButtons
+    const didWin = game.ended && !game.stars
+    const showAlert = game.error || didWin
+    const message = game.error.statusMessage || game.message
+    const buttons = game.error
+      ? game.error.statusCode === 401 ? unauthButtons : errorButtons
+      : didWin ? winButtons : []
 
     return (
       <div id='Game'>
