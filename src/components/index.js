@@ -6,6 +6,7 @@ import ControlsPanel from './ControlsPanel'
 import FunctionsPanel from './FunctionsPanel'
 import InstructionsPanel from './InstructionsPanel'
 import FullScreenAlertBox from './FullScreenAlertBox'
+import ProgressBar from './ProgressBar'
 
 export {
   Game,
@@ -15,5 +16,6 @@ export {
   ControlsPanel,
   FunctionsPanel,
   InstructionsPanel,
-  FullScreenAlertBox
+  FullScreenAlertBox,
+  ProgressBar
 }

@@ -7,12 +7,13 @@ import {
   ControlsPanel,
   FunctionsPanel,
   InstructionsPanel,
-  FullScreenAlertBox
+  FullScreenAlertBox,
+  ProgressBar
 } from '../components'
 
 import store from '../store'
 
-import { startGame, submitAnswer, restart } from '../actions/game'
+import { startGame, submitAnswer, restart, setProgress } from '../actions/game'
 
 const winButtons = [
   { text: 'RESTART', onClick: () => store.dispatch(restart()) },
@@ -32,15 +33,33 @@ const win = typeof window !== 'undefined' && window
 const doc = win && win.document
 doc && (doc.ontouchmove = e => e.preventDefault())
 
+const progressTickEvery = 10 * 1000
+const progressTick = () => {
+  return setInterval(() => {
+    const { game } = store.getState()
+    const { startedAt, endsAt } = game
+
+    if (!startedAt || !endsAt) return
+
+    const progress = 1.0 - ((Date.now() - startedAt) / (endsAt - startedAt))
+
+    store.dispatch(setProgress(progress))
+  }, progressTickEvery)
+}
+
 class Game extends React.Component {
   componentDidMount () {
     this.unsubscribe = store.subscribe(() => this.forceUpdate())
 
     store.dispatch(startGame())
+
+    this.progressTick = progressTick()
   }
 
   componentWillUnmount () {
     this.unsubscribe()
+
+    clearInterval(this.progressTick)
   }
 
   render () {
@@ -56,6 +75,7 @@ class Game extends React.Component {
 
     return (
       <div id='Game'>
+        <ProgressBar progress={game.progress} />
         <div id='PanelTop' className={showAlert ? 'blur' : ''}>
           <div id='Message' className={game.message ? '' : 'hidden'}>{game.message}</div>
           <StackPanel instructions={game.instructionsStack} />

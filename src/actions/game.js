@@ -56,6 +56,11 @@ export const loadLevel = level => ({
   level
 })
 
+export const setProgress = progress => ({
+  type: 'SET_PROGRESS',
+  progress
+})
+
 export const setError = error => ({
   type: 'SET_ERROR',
   error
@@ -77,16 +82,21 @@ const handleResponse = response => {
 
 const handleError = (error, dispatch) => dispatch(setError(error))
 
-const handleLevel = (level, dispatch) => {
-  console.log("Level recieved:", level)
-
-  if (!level /* || !isValidLevel(...) */) throw Error('invalid level')
-
-  if (level.done) {
-    return dispatch(setError({ message: "Congratulation, you have finished all levels!" }))
+const handleJson = (json, dispatch) => {
+  if (json.done) {
+    dispatch(setError({ message: "Congratulation, you have finished all levels!" }))
+    return
   }
 
-  return dispatch(loadLevel(level))
+  if (!json.level /* || !isValidLevel(...) */) throw Error('invalid level')
+
+  dispatch(loadLevel(json.level))
+
+  dispatch({
+    type: 'SET_TIMES',
+    startedAt: json.startedAt,
+    duration: json.duration,
+  })
 }
 
 const domain = process.env.REACT_APP_API_HOST
@@ -98,7 +108,7 @@ export const startGame = () => {
       credentials: 'include'
     })
     .then(res => handleResponse(res))
-    .then(level => handleLevel(level, dispatch))
+    .then(json => handleJson(json, dispatch))
     .catch(error => handleError(error, dispatch))
   }
 }
@@ -120,7 +130,7 @@ export const submitAnswer = () => {
       body: JSON.stringify({ answer })
     })
     .then(res => handleResponse(res))
-    .then(level => handleLevel(level, dispatch))
+    .then(json => handleJson(json, dispatch))
     .catch(error => handleError(error, dispatch))
   }
 }

@@ -25,7 +25,10 @@ export const init = (level = levelClear) => ({
   isRunning: false,
   ended: false,
   message: '',
-  error: ''
+  error: '',
+  startedAt: 0,
+  duration: 0,
+  progress: 1.0,
 })
 
 const initialState = init()
@@ -36,6 +39,29 @@ const reducer = (state = initialState, action) => {
       return {
         ...init(action.level),
         speed: state.speed
+      }
+    }
+
+    case 'SET_TIMES': {
+      return {
+        ...state,
+        startedAt: action.startedAt,
+        duration: action.duration,
+        endsAt: action.startedAt + action.duration,
+      }
+    }
+
+    case 'SET_PROGRESS': {
+      if (action.progress < 0) {
+        return {
+          ...state,
+          error: { message: 'Game has ended!' }
+        }
+      }
+
+      return {
+        ...state,
+        progress: action.progress,
       }
     }
 
