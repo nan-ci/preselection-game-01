@@ -47,7 +47,9 @@ class Game extends React.Component {
     const { game } = store.getState()
     const didWin = game.ended && !game.stars
     const showAlert = game.error || didWin
-    const message = game.error.statusMessage || game.message
+    const message = game.error
+      ? (game.error.statusMessage || game.error.message)
+      : game.message
     const buttons = game.error
       ? game.error.statusCode === 401 ? unauthButtons : errorButtons
       : didWin ? winButtons : []

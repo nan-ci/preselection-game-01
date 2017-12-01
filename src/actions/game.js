@@ -78,7 +78,13 @@ const handleResponse = response => {
 const handleError = (error, dispatch) => dispatch(setError(error))
 
 const handleLevel = (level, dispatch) => {
-  if (!level /* || handle error cases */) throw Error('invalid level')
+  console.log("Level recieved:", level)
+
+  if (!level /* || !isValidLevel(...) */) throw Error('invalid level')
+
+  if (level.done) {
+    return dispatch(setError({ message: "Congratulation, you have finished all levels!" }))
+  }
 
   return dispatch(loadLevel(level))
 }
