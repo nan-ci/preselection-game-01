@@ -16,8 +16,7 @@ const C1 = 100
 const C2 = 200
 const C3 = 300
 
-let allInstructions = { NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3 }
-allInstructions = Object.entries(allInstructions)
+const allInstructions = Object.entries({ NO, FW, TL, TR, P1, P2, P3, F0, F1, F2, C1, C2, C3 })
   .reduce((o, [k, v]) => ({ ...o, [v]: k }), allInstructions)
 
 export {
