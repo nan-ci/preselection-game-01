@@ -13,11 +13,15 @@ import {
 
 import store from '../store'
 
-import { startGame, submitAnswer, restart, setProgress } from '../actions/game'
+import { startGame, loadLevel, submitAnswer, restart, setProgress } from '../actions/game'
+
+import levels from '../levels'
+const USE_MOCKS = process.env.REACT_APP_USE_MOCKS
+let currentLevel = 0
 
 const winButtons = [
   { text: 'RESTART', onClick: () => store.dispatch(restart()) },
-  { text: 'NEXT', onClick: () => store.dispatch(submitAnswer()) }
+  { text: 'NEXT', onClick: () => USE_MOCKS ? store.dispatch(loadLevel(levels[++currentLevel])) : store.dispatch(submitAnswer()) }
 ]
 
 const errorButtons = [
@@ -51,7 +55,7 @@ class Game extends React.Component {
   componentDidMount () {
     this.unsubscribe = store.subscribe(() => this.forceUpdate())
 
-    store.dispatch(startGame())
+    USE_MOCKS ? store.dispatch(loadLevel(levels[currentLevel])) : store.dispatch(startGame())
 
     this.progressTick = progressTick()
   }
