@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "mocks": "REACT_APP_USE_MOCKS=true npm start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "standard",
